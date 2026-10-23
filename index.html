@@ -4,212 +4,864 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkillBridge | Work. Skills. Trust.</title>
+
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
+  font-family: Arial, sans-serif;
   background: #f4f7f5;
   color: #183b30;
 }
+
 header {
   background: #123b30;
   color: white;
-  padding: 22px;
+  padding: 18px 15px;
   text-align: center;
 }
-header h1 { margin: 0; }
+
+header h1 {
+  margin: 0;
+}
+
+nav {
+  margin-top: 12px;
+}
+
+nav button {
+  background: white;
+  color: #123b30;
+  border: 0;
+  padding: 9px 12px;
+  margin: 3px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
 .hero {
   background: #1d604b;
   color: white;
   text-align: center;
-  padding: 35px 15px;
+  padding: 40px 15px;
 }
+
+.hero h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
 main {
-  max-width: 700px;
+  max-width: 750px;
   margin: auto;
   padding: 20px;
 }
+
+.card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+}
+
 button {
   background: #edc65a;
   color: #183b30;
   border: 0;
   padding: 12px 18px;
-  margin: 5px;
+  margin: 5px 2px;
   border-radius: 7px;
   font-weight: bold;
+  cursor: pointer;
 }
-.card {
-  background: white;
-  padding: 18px;
-  margin: 15px 0;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px #0001;
-}
-input, textarea, select {
+
+input,
+textarea,
+select {
   display: block;
   width: 100%;
-  box-sizing: border-box;
   padding: 12px;
   margin: 8px 0 15px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 7px;
 }
-.hidden { display: none; }
+
+textarea {
+  min-height: 120px;
+}
+
+.hidden {
+  display: none;
+}
+
+.badge {
+  display: inline-block;
+  background: #e6f2ed;
+  color: #1d604b;
+  padding: 6px 10px;
+  border-radius: 20px;
+  margin: 3px;
+  font-size: 13px;
+}
+
+.safe {
+  border-left: 5px solid #1d604b;
+}
+
+.warning {
+  background: #fff8dc;
+  padding: 12px;
+  border-radius: 7px;
+  margin-top: 10px;
+}
+
 footer {
   text-align: center;
-  padding: 20px;
+  padding: 25px 15px;
   color: #666;
 }
 </style>
 </head>
+
 <body>
 
 <header>
   <h1>SkillBridge</h1>
   <p>Work. Skills. Trust. Anywhere.</p>
+
+  <nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('jobs')">Find Jobs</button>
+    <button onclick="showPage('post')">Post Job</button>
+    <button onclick="showPage('login')">Login</button>
+    <button onclick="showPage('register')">Register</button>
+  </nav>
 </header>
 
 <section class="hero">
   <h2>Your Skills. Your Opportunity.</h2>
   <p>Connect with people who need your skills.</p>
+
   <button onclick="showPage('jobs')">Find Jobs</button>
   <button onclick="showPage('post')">Post a Job</button>
 </section>
 
 <main>
-  <section id="home">
-    <div class="card">
-      <h2>Welcome to SkillBridge</h2>
-      <p>Our goal is to connect skilled workers with clients around the world through honest and lawful work.</p>
-      <h3>Explore Skills</h3>
-      <p>Graphic Design · Writing · Video Editing · Translation · Social Media · Virtual Assistance</p>
-    </div>
-  </section>
 
-  <section id="jobs" class="hidden">
-    <h2>Available Jobs</h2>
-    <div id="jobList"></div>
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('post')">Post a Job</button>
-  </section>
+<!-- HOME -->
+<section id="home">
 
-  <section id="post" class="hidden">
-    <div class="card">
-      <h2>Post a Job</h2>
-      <form id="jobForm">
-        <label>Job Title</label>
-        <input id="title" required placeholder="e.g. Design a logo">
-        <label>Category</label>
-        <select id="category" required>
-          <option value="">Choose a skill</option>
-          <option>Graphic Design</option>
-          <option>Video Editing</option>
-          <option>Writing & Translation</option>
-          <option>Social Media</option>
-          <option>Virtual Assistant</option>
-          <option>Other lawful work</option>
-        </select>
-        <label>Budget in Naira</label>
-        <input id="budget" type="number" min="1" required placeholder="e.g. 20000">
-        <label>Job Description</label>
-        <textarea id="description" required placeholder="Describe the work"></textarea>
-        <button type="submit">Publish Test Job</button>
-      </form>
-      <button onclick="showPage('home')">Home</button>
-    </div>
-  </section>
+  <div class="card">
+    <h2>Welcome to SkillBridge 🌍</h2>
 
-  <section id="apply" class="hidden">
-    <div class="card">
-      <h2>Apply for a Job</h2>
-      <p id="selectedJob"></p>
-      <form id="applyForm">
-        <label>Your Name</label>
-        <input id="workerName" required>
-        <label>Your Skills</label>
-        <input id="workerSkill" required>
-        <label>Your Proposal</label>
-        <textarea id="proposal" required></textarea>
-        <button type="submit">Submit Test Application</button>
-      </form>
-      <p id="applyMessage"></p>
-      <button onclick="showPage('jobs')">Back to Jobs</button>
+    <p>
+      SkillBridge is designed to connect skilled people with clients
+      around the world through honest and lawful work.
+    </p>
+
+    <h3>Popular Skills</h3>
+
+    <span class="badge">Graphic Design</span>
+    <span class="badge">Writing</span>
+    <span class="badge">Translation</span>
+    <span class="badge">Video Editing</span>
+    <span class="badge">Social Media</span>
+    <span class="badge">Virtual Assistance</span>
+  </div>
+
+  <div class="card safe">
+    <h2>🛡️ SkillBridge Safety</h2>
+
+    <p>
+      We aim to build a trusted marketplace where users can
+      identify suspicious activity and report scams.
+    </p>
+
+    <button onclick="showPage('safety')">
+      Safety Center
+    </button>
+  </div>
+
+</section>
+
+
+<!-- JOBS -->
+<section id="jobs" class="hidden">
+
+  <h2>Available Jobs</h2>
+
+  <div id="jobList"></div>
+
+  <button onclick="showPage('post')">
+    Post a Job
+  </button>
+
+</section>
+
+
+<!-- POST JOB -->
+<section id="post" class="hidden">
+
+  <div class="card">
+
+    <h2>📢 Post a Job</h2>
+
+    <form id="jobForm">
+
+      <label>Job Title</label>
+
+      <input
+        id="title"
+        required
+        placeholder="Example: Design a business logo"
+      >
+
+      <label>Category</label>
+
+      <select id="category" required>
+
+        <option value="">
+          Choose a skill
+        </option>
+
+        <option>Graphic Design</option>
+        <option>Video Editing</option>
+        <option>Writing & Translation</option>
+        <option>Social Media</option>
+        <option>Virtual Assistant</option>
+        <option>Programming</option>
+        <option>Other lawful work</option>
+
+      </select>
+
+      <label>Budget in Naira</label>
+
+      <input
+        id="budget"
+        type="number"
+        min="1"
+        required
+        placeholder="Example: 20000"
+      >
+
+      <label>Job Description</label>
+
+      <textarea
+        id="description"
+        required
+        placeholder="Describe the work..."
+      ></textarea>
+
+      <button type="submit">
+        Publish Job
+      </button>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- APPLY -->
+<section id="apply" class="hidden">
+
+  <div class="card">
+
+    <h2>📝 Apply for Job</h2>
+
+    <p id="selectedJob"></p>
+
+    <form id="applyForm">
+
+      <label>Your Name</label>
+
+      <input id="workerName" required>
+
+      <label>Your Main Skill</label>
+
+      <input
+        id="workerSkill"
+        required
+        placeholder="Example: Graphic Design"
+      >
+
+      <label>Your Proposal</label>
+
+      <textarea
+        id="proposal"
+        required
+        placeholder="Explain why you are suitable for this job..."
+      ></textarea>
+
+      <button type="submit">
+        Submit Application
+      </button>
+
+    </form>
+
+    <p id="applyMessage"></p>
+
+  </div>
+
+</section>
+
+
+<!-- LOGIN -->
+<section id="login" class="hidden">
+
+  <div class="card">
+
+    <h2>🔐 Login</h2>
+
+    <p>
+      Login to access your SkillBridge account.
+    </p>
+
+    <form id="loginForm">
+
+      <label>Email</label>
+
+      <input
+        id="loginEmail"
+        type="email"
+        required
+        placeholder="you@example.com"
+      >
+
+      <label>Password</label>
+
+      <input
+        id="loginPassword"
+        type="password"
+        required
+        placeholder="Your password"
+      >
+
+      <button type="submit">
+        Login
+      </button>
+
+    </form>
+
+    <p id="loginMessage"></p>
+
+    <div class="warning">
+      ⚠️ This is currently a prototype.
+      Real secure authentication will be connected later.
     </div>
-  </section>
+
+  </div>
+
+</section>
+
+
+<!-- REGISTER -->
+<section id="register" class="hidden">
+
+  <div class="card">
+
+    <h2>👤 Create Account</h2>
+
+    <form id="registerForm">
+
+      <label>Full Name</label>
+
+      <input
+        id="registerName"
+        required
+        placeholder="Your full name"
+      >
+
+      <label>Email</label>
+
+      <input
+        id="registerEmail"
+        type="email"
+        required
+        placeholder="you@example.com"
+      >
+
+      <label>I want to...</label>
+
+      <select id="userType" required>
+
+        <option value="">
+          Choose one
+        </option>
+
+        <option value="worker">
+          Find work
+        </option>
+
+        <option value="client">
+          Hire skilled people
+        </option>
+
+      </select>
+
+      <label>Password</label>
+
+      <input
+        id="registerPassword"
+        type="password"
+        minlength="8"
+        required
+        placeholder="At least 8 characters"
+      >
+
+      <button type="submit">
+        Create Account
+      </button>
+
+    </form>
+
+    <p id="registerMessage"></p>
+
+    <div class="warning">
+      ⚠️ Prototype only. Do not use a real password here yet.
+      Secure authentication will be connected later.
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="hidden">
+
+  <div class="card">
+
+    <h2>👤 My Dashboard</h2>
+
+    <p id="welcomeUser"></p>
+
+    <h3>My SkillBridge Profile</h3>
+
+    <p>
+      <strong>Account Type:</strong>
+      <span id="accountType"></span>
+    </p>
+
+    <p>
+      <strong>Trust Score:</strong>
+      New Account
+    </p>
+
+    <span class="badge">
+      Account Created
+    </span>
+
+    <span class="badge">
+      Profile Incomplete
+    </span>
+
+    <br><br>
+
+    <button onclick="showPage('jobs')">
+      Find Jobs
+    </button>
+
+    <button onclick="showPage('post')">
+      Post Job
+    </button>
+
+    <button onclick="logout()">
+      Logout
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- SAFETY -->
+<section id="safety" class="hidden">
+
+  <div class="card safe">
+
+    <h2>🛡️ Safety Center</h2>
+
+    <h3>Protect Yourself</h3>
+
+    <ul>
+      <li>Do not share your password.</li>
+      <li>Never share OTP codes.</li>
+      <li>Be careful with suspicious payment requests.</li>
+      <li>Do not accept fake jobs or illegal work.</li>
+      <li>Report suspicious users.</li>
+    </ul>
+
+    <h3>🚨 Report Suspicious Activity</h3>
+
+    <textarea
+      id="reportText"
+      placeholder="Describe the suspicious activity..."
+    ></textarea>
+
+    <button onclick="submitReport()">
+      Submit Test Report
+    </button>
+
+    <p id="reportMessage"></p>
+
+  </div>
+
+</section>
+
 </main>
 
+
 <footer>
-  <p>SkillBridge © 2026</p>
-  <p>Honest work. Trusted skills. Global opportunities.</p>
-  <p>Early prototype — not yet a live job marketplace.</p>
+
+  <p>
+    SkillBridge © 2026
+  </p>
+
+  <p>
+    Honest work. Trusted skills. Global opportunities.
+  </p>
+
+  <p>
+    Early prototype — real authentication,
+    database and payments will be added later.
+  </p>
+
 </footer>
 
+
 <script>
+
 let jobs = [];
+
 let selected = null;
 
+let currentUser = null;
+
+
+/* PAGE NAVIGATION */
+
 function showPage(page) {
-  ['home','jobs','post','apply'].forEach(id => {
-    document.getElementById(id).classList.add('hidden');
+
+  const pages = [
+    'home',
+    'jobs',
+    'post',
+    'apply',
+    'login',
+    'register',
+    'dashboard',
+    'safety'
+  ];
+
+  pages.forEach(function(id) {
+
+    document
+      .getElementById(id)
+      .classList
+      .add('hidden');
+
   });
-  document.getElementById(page).classList.remove('hidden');
-  if (page === 'jobs') renderJobs();
+
+  document
+    .getElementById(page)
+    .classList
+    .remove('hidden');
+
+  if (page === 'jobs') {
+    renderJobs();
+  }
+
   window.scrollTo(0,0);
 }
 
-function renderJobs() {
-  const list = document.getElementById('jobList');
-  if (jobs.length === 0) {
-    list.innerHTML = '<div class="card">No test jobs yet. You can publish one using Post a Job.</div>';
-    return;
-  }
-  list.innerHTML = '';
-  jobs.forEach((job, i) => {
-    list.innerHTML += `
-      <div class="card">
-        <h3>${safe(job.title)}</h3>
-        <p>${safe(job.category)}</p>
-        <h3>₦${job.budget.toLocaleString()}</h3>
-        <p>${safe(job.description)}</p>
-        <button onclick="openApply(${i})">Apply Now</button>
-      </div>`;
-  });
-}
+
+/* SAFE TEXT */
 
 function safe(text) {
+
   const el = document.createElement('span');
+
   el.textContent = text;
+
   return el.innerHTML;
 }
 
-document.getElementById('jobForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  jobs.push({
-    title: document.getElementById('title').value,
-    category: document.getElementById('category').value,
-    budget: Number(document.getElementById('budget').value),
-    description: document.getElementById('description').value
-  });
-  this.reset();
-  alert('Test job added on this page!');
-  showPage('jobs');
-});
 
-function openApply(index) {
-  selected = jobs[index];
-  document.getElementById('selectedJob').textContent =
-    selected.title + ' — ₦' + selected.budget.toLocaleString();
-  document.getElementById('applyMessage').textContent = '';
-  showPage('apply');
+/* JOB LIST */
+
+function renderJobs() {
+
+  const list =
+    document.getElementById('jobList');
+
+  if (jobs.length === 0) {
+
+    list.innerHTML = `
+      <div class="card">
+        No jobs yet.
+        Be the first person to post a lawful job.
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML = '';
+
+  jobs.forEach(function(job, i) {
+
+    list.innerHTML += `
+
+      <div class="card">
+
+        <h3>${safe(job.title)}</h3>
+
+        <p>
+          <strong>Category:</strong>
+          ${safe(job.category)}
+        </p>
+
+        <h3>
+          ₦${job.budget.toLocaleString()}
+        </h3>
+
+        <p>
+          ${safe(job.description)}
+        </p>
+
+        <button onclick="openApply(${i})">
+          Apply Now
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
 }
 
-document.getElementById('applyForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  document.getElementById('applyMessage').textContent =
-    'Test application completed. This demo does not send it to a real client.';
-  this.reset();
-});
+
+/* POST JOB */
+
+document
+  .getElementById('jobForm')
+  .addEventListener('submit', function(e) {
+
+    e.preventDefault();
+
+    jobs.push({
+
+      title:
+        document.getElementById('title').value,
+
+      category:
+        document.getElementById('category').value,
+
+      budget:
+        Number(
+          document.getElementById('budget').value
+        ),
+
+      description:
+        document.getElementById('description').value
+
+    });
+
+    this.reset();
+
+    alert(
+      'Job added to this prototype.'
+    );
+
+    showPage('jobs');
+
+  });
+
+
+/* APPLY */
+
+function openApply(index) {
+
+  selected = jobs[index];
+
+  document.getElementById(
+    'selectedJob'
+  ).textContent =
+    selected.title +
+    ' — ₦' +
+    selected.budget.toLocaleString();
+
+  document.getElementById(
+    'applyMessage'
+  ).textContent = '';
+
+  showPage('apply');
+
+}
+
+
+document
+  .getElementById('applyForm')
+  .addEventListener('submit', function(e) {
+
+    e.preventDefault();
+
+    document.getElementById(
+      'applyMessage'
+    ).textContent =
+      'Application recorded in this prototype. It has not been sent to a real client yet.';
+
+    this.reset();
+
+  });
+
+
+/* REGISTER */
+
+document
+  .getElementById('registerForm')
+  .addEventListener('submit', function(e) {
+
+    e.preventDefault();
+
+    const name =
+      document.getElementById(
+        'registerName'
+      ).value;
+
+    const type =
+      document.getElementById(
+        'userType'
+      ).value;
+
+    currentUser = {
+      name: name,
+      type: type
+    };
+
+    document.getElementById(
+      'registerMessage'
+    ).textContent =
+      'Demo account created successfully.';
+
+    setTimeout(function() {
+
+      openDashboard();
+
+    }, 700);
+
+  });
+
+
+/* LOGIN */
+
+document
+  .getElementById('loginForm')
+  .addEventListener('submit', function(e) {
+
+    e.preventDefault();
+
+    currentUser = {
+      name: 'SkillBridge User',
+      type: 'worker'
+    };
+
+    document.getElementById(
+      'loginMessage'
+    ).textContent =
+      'Demo login successful.';
+
+    setTimeout(function() {
+
+      openDashboard();
+
+    }, 700);
+
+  });
+
+
+/* DASHBOARD */
+
+function openDashboard() {
+
+  if (!currentUser) {
+
+    showPage('login');
+
+    return;
+
+  }
+
+  document.getElementById(
+    'welcomeUser'
+  ).textContent =
+    'Welcome, ' +
+    currentUser.name +
+    '!';
+
+  document.getElementById(
+    'accountType'
+  ).textContent =
+    currentUser.type === 'worker'
+      ? 'Job Seeker'
+      : 'Client / Employer';
+
+  showPage('dashboard');
+
+}
+
+
+/* LOGOUT */
+
+function logout() {
+
+  currentUser = null;
+
+  alert('You have logged out of the demo.');
+
+  showPage('home');
+
+}
+
+
+/* REPORT */
+
+function submitReport() {
+
+  const text =
+    document.getElementById(
+      'reportText'
+    ).value.trim();
+
+  if (!text) {
+
+    alert(
+      'Please describe the suspicious activity first.'
+    );
+
+    return;
+
+  }
+
+  document.getElementById(
+    'reportMessage'
+  ).textContent =
+    'Test report submitted. Real reporting will be connected to the secure database later.';
+
+  document.getElementById(
+    'reportText'
+  ).value = '';
+
+}
+
 </script>
 
 </body>
-  </html>
+</html>
