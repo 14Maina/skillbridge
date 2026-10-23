@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillBridge | Work. Skills. Trust.</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f7f5;
+  color: #183b30;
+}
+header {
+  background: #123b30;
+  color: white;
+  padding: 22px;
+  text-align: center;
+}
+header h1 { margin: 0; }
+.hero {
+  background: #1d604b;
+  color: white;
+  text-align: center;
+  padding: 35px 15px;
+}
+main {
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+}
+button {
+  background: #edc65a;
+  color: #183b30;
+  border: 0;
+  padding: 12px 18px;
+  margin: 5px;
+  border-radius: 7px;
+  font-weight: bold;
+}
+.card {
+  background: white;
+  padding: 18px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #0001;
+}
+input, textarea, select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin: 8px 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.hidden { display: none; }
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>SkillBridge</h1>
+  <p>Work. Skills. Trust. Anywhere.</p>
+</header>
+
+<section class="hero">
+  <h2>Your Skills. Your Opportunity.</h2>
+  <p>Connect with people who need your skills.</p>
+  <button onclick="showPage('jobs')">Find Jobs</button>
+  <button onclick="showPage('post')">Post a Job</button>
+</section>
+
+<main>
+  <section id="home">
+    <div class="card">
+      <h2>Welcome to SkillBridge</h2>
+      <p>Our goal is to connect skilled workers with clients around the world through honest and lawful work.</p>
+      <h3>Explore Skills</h3>
+      <p>Graphic Design · Writing · Video Editing · Translation · Social Media · Virtual Assistance</p>
+    </div>
+  </section>
+
+  <section id="jobs" class="hidden">
+    <h2>Available Jobs</h2>
+    <div id="jobList"></div>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('post')">Post a Job</button>
+  </section>
+
+  <section id="post" class="hidden">
+    <div class="card">
+      <h2>Post a Job</h2>
+      <form id="jobForm">
+        <label>Job Title</label>
+        <input id="title" required placeholder="e.g. Design a logo">
+        <label>Category</label>
+        <select id="category" required>
+          <option value="">Choose a skill</option>
+          <option>Graphic Design</option>
+          <option>Video Editing</option>
+          <option>Writing & Translation</option>
+          <option>Social Media</option>
+          <option>Virtual Assistant</option>
+          <option>Other lawful work</option>
+        </select>
+        <label>Budget in Naira</label>
+        <input id="budget" type="number" min="1" required placeholder="e.g. 20000">
+        <label>Job Description</label>
+        <textarea id="description" required placeholder="Describe the work"></textarea>
+        <button type="submit">Publish Test Job</button>
+      </form>
+      <button onclick="showPage('home')">Home</button>
+    </div>
+  </section>
+
+  <section id="apply" class="hidden">
+    <div class="card">
+      <h2>Apply for a Job</h2>
+      <p id="selectedJob"></p>
+      <form id="applyForm">
+        <label>Your Name</label>
+        <input id="workerName" required>
+        <label>Your Skills</label>
+        <input id="workerSkill" required>
+        <label>Your Proposal</label>
+        <textarea id="proposal" required></textarea>
+        <button type="submit">Submit Test Application</button>
+      </form>
+      <p id="applyMessage"></p>
+      <button onclick="showPage('jobs')">Back to Jobs</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>SkillBridge © 2026</p>
+  <p>Honest work. Trusted skills. Global opportunities.</p>
+  <p>Early prototype — not yet a live job marketplace.</p>
+</footer>
+
+<script>
+let jobs = [];
+let selected = null;
+
+function showPage(page) {
+  ['home','jobs','post','apply'].forEach(id => {
+    document.getElementById(id).classList.add('hidden');
+  });
+  document.getElementById(page).classList.remove('hidden');
+  if (page === 'jobs') renderJobs();
+  window.scrollTo(0,0);
+}
+
+function renderJobs() {
+  const list = document.getElementById('jobList');
+  if (jobs.length === 0) {
+    list.innerHTML = '<div class="card">No test jobs yet. You can publish one using Post a Job.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  jobs.forEach((job, i) => {
+    list.innerHTML += `
+      <div class="card">
+        <h3>${safe(job.title)}</h3>
+        <p>${safe(job.category)}</p>
+        <h3>₦${job.budget.toLocaleString()}</h3>
+        <p>${safe(job.description)}</p>
+        <button onclick="openApply(${i})">Apply Now</button>
+      </div>`;
+  });
+}
+
+function safe(text) {
+  const el = document.createElement('span');
+  el.textContent = text;
+  return el.innerHTML;
+}
+
+document.getElementById('jobForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  jobs.push({
+    title: document.getElementById('title').value,
+    category: document.getElementById('category').value,
+    budget: Number(document.getElementById('budget').value),
+    description: document.getElementById('description').value
+  });
+  this.reset();
+  alert('Test job added on this page!');
+  showPage('jobs');
+});
+
+function openApply(index) {
+  selected = jobs[index];
+  document.getElementById('selectedJob').textContent =
+    selected.title + ' — ₦' + selected.budget.toLocaleString();
+  document.getElementById('applyMessage').textContent = '';
+  showPage('apply');
+}
+
+document.getElementById('applyForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  document.getElementById('applyMessage').textContent =
+    'Test application completed. This demo does not send it to a real client.';
+  this.reset();
+});
+</script>
+
+</body>
+  </html>
