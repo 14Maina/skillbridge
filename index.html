@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <title>SkillBridge | Work. Skills. Trust.</title>
 
 <style>
@@ -13,14 +16,14 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f4f7f5;
-  color: #183b30;
+  background: #f5f7f6;
+  color: #222;
 }
 
 header {
   background: #123b30;
   color: white;
-  padding: 18px 15px;
+  padding: 25px 15px;
   text-align: center;
 }
 
@@ -29,65 +32,31 @@ header h1 {
 }
 
 nav {
-  margin-top: 12px;
-}
-
-nav button {
-  background: white;
-  color: #123b30;
-  border: 0;
-  padding: 9px 12px;
-  margin: 3px;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.hero {
-  background: #1d604b;
-  color: white;
-  text-align: center;
-  padding: 40px 15px;
-}
-
-.hero h2 {
-  font-size: 30px;
-  margin-bottom: 10px;
-}
-
-main {
-  max-width: 750px;
-  margin: auto;
-  padding: 20px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #0001;
+  margin-top: 15px;
 }
 
 button {
-  background: #edc65a;
-  color: #183b30;
-  border: 0;
-  padding: 12px 18px;
-  margin: 5px 2px;
-  border-radius: 7px;
-  font-weight: bold;
+  background: #1d604b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
+button:hover {
+  opacity: 0.9;
+}
+
 input,
-textarea,
-select {
-  display: block;
+select,
+textarea {
   width: 100%;
-  padding: 12px;
-  margin: 8px 0 15px;
+  padding: 11px;
+  margin: 7px 0 15px;
   border: 1px solid #ccc;
-  border-radius: 7px;
+  border-radius: 6px;
 }
 
 textarea {
@@ -96,6 +65,26 @@ textarea {
 
 .hidden {
   display: none;
+}
+
+.hero {
+  text-align: center;
+  padding: 45px 15px;
+  background: white;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .badge {
@@ -152,7 +141,6 @@ footer {
 
 <main>
 
-<!-- HOME -->
 <section id="home">
 
   <div class="card">
@@ -189,7 +177,6 @@ footer {
 </section>
 
 
-<!-- JOBS -->
 <section id="jobs" class="hidden">
 
   <h2>Available Jobs</h2>
@@ -203,7 +190,6 @@ footer {
 </section>
 
 
-<!-- POST JOB -->
 <section id="post" class="hidden">
 
   <div class="card">
@@ -267,7 +253,6 @@ footer {
 </section>
 
 
-<!-- APPLY -->
 <section id="apply" class="hidden">
 
   <div class="card">
@@ -311,7 +296,6 @@ footer {
 </section>
 
 
-<!-- LOGIN -->
 <section id="login" class="hidden">
 
   <div class="card">
@@ -350,17 +334,11 @@ footer {
 
     <p id="loginMessage"></p>
 
-    <div class="warning">
-      ⚠️ This is currently a prototype.
-      Real secure authentication will be connected later.
-    </div>
-
   </div>
 
 </section>
 
 
-<!-- REGISTER -->
 <section id="register" class="hidden">
 
   <div class="card">
@@ -422,17 +400,11 @@ footer {
 
     <p id="registerMessage"></p>
 
-    <div class="warning">
-      ⚠️ Prototype only. Do not use a real password here yet.
-      Secure authentication will be connected later.
-    </div>
-
   </div>
 
 </section>
 
 
-<!-- DASHBOARD -->
 <section id="dashboard" class="hidden">
 
   <div class="card">
@@ -480,7 +452,6 @@ footer {
 </section>
 
 
-<!-- SAFETY -->
 <section id="safety" class="hidden">
 
   <div class="card safe">
@@ -528,8 +499,7 @@ footer {
   </p>
 
   <p>
-    Early prototype — real authentication,
-    database and payments will be added later.
+    Supabase connection prepared. Real database features are being added.
   </p>
 
 </footer>
@@ -727,13 +697,23 @@ document
 
 document
   .getElementById('registerForm')
-  .addEventListener('submit', function(e) {
+  .addEventListener('submit', async function(e) {
 
     e.preventDefault();
 
     const name =
       document.getElementById(
         'registerName'
+      ).value.trim();
+
+    const email =
+      document.getElementById(
+        'registerEmail'
+      ).value.trim();
+
+    const password =
+      document.getElementById(
+        'registerPassword'
       ).value;
 
     const type =
@@ -741,21 +721,43 @@ document
         'userType'
       ).value;
 
-    currentUser = {
-      name: name,
-      type: type
-    };
+    const message =
+      document.getElementById(
+        'registerMessage'
+      );
 
-    document.getElementById(
-      'registerMessage'
-    ).textContent =
-      'Demo account created successfully.';
+    message.textContent =
+      'Creating your SkillBridge account...';
 
-    setTimeout(function() {
+    try {
 
-      openDashboard();
+      const { data, error } =
+        await skillBridgeSupabase.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: name,
+              account_type: type
+            }
+          }
+        });
 
-    }, 700);
+      if (error) {
+        throw error;
+      }
+
+      message.textContent =
+        'Account created. Check your email to confirm your account.';
+
+      this.reset();
+
+    } catch (error) {
+
+      message.textContent =
+        'Registration error: ' + error.message;
+
+    }
 
   });
 
@@ -764,34 +766,107 @@ document
 
 document
   .getElementById('loginForm')
-  .addEventListener('submit', function(e) {
+  .addEventListener('submit', async function(e) {
 
     e.preventDefault();
 
-    currentUser = {
-      name: 'SkillBridge User',
-      type: 'worker'
-    };
+    const email =
+      document.getElementById(
+        'loginEmail'
+      ).value.trim();
 
-    document.getElementById(
-      'loginMessage'
-    ).textContent =
-      'Demo login successful.';
+    const password =
+      document.getElementById(
+        'loginPassword'
+      ).value;
 
-    setTimeout(function() {
+    const message =
+      document.getElementById(
+        'loginMessage'
+      );
 
-      openDashboard();
+    message.textContent =
+      'Logging in...';
 
-    }, 700);
+    try {
+
+      const { data, error } =
+        await skillBridgeSupabase.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      currentUser =
+        data.user;
+
+      await loadProfile();
+
+      message.textContent =
+        'Login successful.';
+
+      setTimeout(function() {
+
+        openDashboard();
+
+      }, 500);
+
+    } catch (error) {
+
+      message.textContent =
+        'Login error: ' + error.message;
+
+    }
 
   });
 
 
-/* DASHBOARD */
+/* LOAD PROFILE */
 
-function openDashboard() {
+async function loadProfile() {
 
   if (!currentUser) {
+    return;
+  }
+
+  const { data, error } =
+    await skillBridgeSupabase
+      .from('profiles')
+      .select('full_name, account_type')
+      .eq('id', currentUser.id)
+      .single();
+
+  if (error) {
+
+    console.log(
+      'Profile loading error:',
+      error.message
+    );
+
+    return;
+  }
+
+  currentUser.profile =
+    data;
+
+}
+
+
+/* DASHBOARD */
+
+async function openDashboard() {
+
+  const {
+    data: {
+      user
+    }
+  } =
+    await skillBridgeSupabase.auth.getUser();
+
+  if (!user) {
 
     showPage('login');
 
@@ -799,17 +874,25 @@ function openDashboard() {
 
   }
 
+  currentUser =
+    user;
+
+  await loadProfile();
+
   document.getElementById(
     'welcomeUser'
   ).textContent =
     'Welcome, ' +
-    currentUser.name +
+    (
+      currentUser.profile?.full_name ||
+      currentUser.email
+    ) +
     '!';
 
   document.getElementById(
     'accountType'
   ).textContent =
-    currentUser.type === 'worker'
+    currentUser.profile?.account_type === 'worker'
       ? 'Job Seeker'
       : 'Client / Employer';
 
@@ -820,11 +903,23 @@ function openDashboard() {
 
 /* LOGOUT */
 
-function logout() {
+async function logout() {
+
+  const { error } =
+    await skillBridgeSupabase.auth.signOut();
+
+  if (error) {
+
+    alert(
+      'Logout error: ' +
+      error.message
+    );
+
+    return;
+
+  }
 
   currentUser = null;
-
-  alert('You have logged out of the demo.');
 
   showPage('home');
 
@@ -853,7 +948,7 @@ function submitReport() {
   document.getElementById(
     'reportMessage'
   ).textContent =
-    'Test report submitted. Real reporting will be connected to the secure database later.';
+    'Test report submitted. Secure database reporting will be connected next.';
 
   document.getElementById(
     'reportText'
@@ -861,7 +956,44 @@ function submitReport() {
 
 }
 
+
+/* SUPABASE CONNECTION */
+
+const SUPABASE_URL =
+  'https://vajdpwsafqbdpnegmfvr.supabase.co';
+
+const SUPABASE_PUBLISHABLE_KEY =
+  'sb_publishable_m4t60b903KsPTg5hsBKwNQ_9w5h5DQA';
+
+const skillBridgeSupabase =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+console.log(
+  'SkillBridge Supabase connection is ready.'
+);
+
+
+/* CHECK EXISTING LOGIN */
+
+skillBridgeSupabase.auth
+  .getSession()
+  .then(async function(result) {
+
+    if (result.data.session) {
+
+      currentUser =
+        result.data.session.user;
+
+      await loadProfile();
+
+    }
+
+  });
+
 </script>
 
 </body>
-</html>
+  </html>
