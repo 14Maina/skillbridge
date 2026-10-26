@@ -1463,8 +1463,7 @@ function updateDashboardProfile() {
   }
 
 
-  const profile =
-    currentUser.profile;
+  const profile =currentUser.profile;
 
 
   if (!profile) {
@@ -1478,4 +1477,459 @@ function updateDashboardProfile() {
     'Welcome, ' +
     (
       profile.full_name ||
-      cu
+      currentUser.email
+    ) +
+    '!';
+
+
+  document.getElementById(
+    'accountType'
+  ).textContent =
+    profile.account_type === 'worker'
+      ? 'Job Seeker'
+      : 'Client / Employer';
+
+
+  document.getElementById(
+    'profileCountryDisplay'
+  ).textContent =
+    profile.country ||
+    'Not added';
+
+
+  const skillsContainer =
+    document.getElementById(
+      'profileSkillsDisplay'
+    );
+
+
+  if (
+    Array.isArray(profile.skills) &&
+    profile.skills.length > 0
+  ) {
+
+    skillsContainer.innerHTML =
+      profile.skills
+        .map(function(skill) {
+
+          return `
+            <span class="profile-skill">
+              ${safe(skill)}
+            </span>
+          `;
+
+        })
+        .join('');
+
+  } else {
+
+    skillsContainer.innerHTML = `
+      <span class="badge">
+        No skills added
+      </span>
+    `;
+
+  }
+
+
+  updateProfileStatus();
+
+}
+
+
+
+/* =====================================
+   PROFILE STATUS
+===================================== */
+
+function updateProfileStatus() {
+
+  const status =
+    document.getElementById(
+      'profileStatus'
+    );
+
+
+  if (!status || !currentUser?.profile) {
+    return;
+  }
+
+
+  const profile =
+    currentUser.profile;
+
+
+  const complete =
+    Boolean(profile.full_name) &&
+    Boolean(profile.country) &&
+    Array.isArray(profile.skills) &&
+    profile.skills.length > 0;
+
+
+  if (complete) {
+
+    status.textContent =
+      '✅ Profile Complete';
+
+  } else {
+
+    status.textContent =
+      'Profile Incomplete';
+
+  }
+
+}
+
+
+
+/* =====================================
+   FILL PROFILE FORM
+===================================== */
+
+function fillProfileForm() {
+
+  if (!currentUser?.profile) {
+    return;
+  }
+
+
+  const profile =
+    currentUser.profile;
+
+
+  document.getElementById(
+    'profileName'
+  ).value =
+    profile.full_name || '';
+
+
+  document.getElementById(
+    'profileCountry'
+  ).value =
+    profile.country || 'Nigeria';
+
+
+  document.getElementById(
+    'profileSkills'
+  ).value =
+    Array.isArray(profile.skills)
+      ? profile.skills.join(', ')
+      : '';
+
+}
+
+
+
+/* =====================================
+   SAVE PROFILE
+===================================== */
+
+document
+  .getElementById('profileForm')
+  .addEventListener(
+    'submit',
+    async function(e) {
+
+      e.preventDefault();
+
+
+      if (!currentUser) {
+
+        showPage('login');
+
+        return;
+      }
+
+
+      const fullName =
+        document.getElementById(
+          'profileName'
+        ).value.trim();
+
+
+      const country =
+        document.getElementById(
+          'profileCountry'
+        ).value.trim();
+
+
+      const skillsText =
+        document.getElementById(
+          'profileSkills'
+        ).value.trim();
+
+
+      const message =
+        document.getElementById(
+          'profileMessage'
+        );
+
+
+      const skills =
+        skillsText
+          .split(',')
+          .map(function(skill) {
+
+            return skill.trim();
+
+          })
+          .filter(function(skill) {
+
+            return skill.length > 0;
+
+          });
+
+
+      message.textContent =
+        'Saving your profile...';
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await skillBridgeSupabase
+            .from('profiles')
+            .update({
+
+              full_name: fullName,
+
+              country: country,
+
+              skills: skills
+
+            })
+            .eq(
+              'id',
+              currentUser.id
+            )
+            .select(
+              'full_name, account_type, country, skills'
+            )
+            .single();
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        currentUser.profile =
+          data;
+
+
+        updateDashboardProfile();
+
+
+        message.textContent =
+          '✅ Profile saved successfully.';
+
+
+        setTimeout(
+          function() {
+
+            openDashboard();
+
+          },
+          700
+        );
+
+
+      } catch (error) {
+
+        message.textContent =
+          'Profile error: ' +
+          error.message;
+
+      }
+
+    }
+  );
+
+
+
+/* =====================================
+   DASHBOARD
+===================================== */
+
+async function openDashboard() {
+
+  const {
+    data: {
+      user
+    }
+  } =
+    await skillBridgeSupabase
+      .auth
+      .getUser();
+
+
+  if (!user) {
+
+    currentUser = null;
+
+    updateNavigation();
+
+    showPage('login');
+
+    return;
+  }
+
+
+  currentUser =
+    user;
+
+
+  await loadProfile();
+
+
+  updateNavigation();
+
+
+  showPage('dashboard');
+
+}
+
+
+
+/* =====================================
+   LOGOUT
+===================================== */
+
+async function logout() {
+
+  const {
+    error
+  } =
+    await skillBridgeSupabase
+      .auth
+      .signOut();
+
+
+  if (error) {
+
+    alert(
+      'Logout error: ' +
+      error.message
+    );
+
+    return;
+  }
+
+
+  currentUser = null;
+
+
+  updateNavigation();
+
+
+  showPage('home');
+
+}
+
+
+
+/* =====================================
+   REPORT
+===================================== */
+
+function submitReport() {
+
+  const text =
+    document.getElementById(
+      'reportText'
+    ).value.trim();
+
+
+  if (!text) {
+
+    alert(
+      'Please describe the suspicious activity first.'
+    );
+
+    return;
+  }
+
+
+  document.getElementById(
+    'reportMessage'
+  ).textContent =
+    'Test report submitted. Secure database reporting will be connected next.';
+
+
+  document.getElementById(
+    'reportText'
+  ).value = '';
+
+}
+
+
+
+/* =====================================
+   EXISTING SESSION
+===================================== */
+
+skillBridgeSupabase
+  .auth
+  .getSession()
+  .then(
+    async function(result) {
+
+      if (result.data.session) {
+
+        currentUser =
+          result.data.session.user;
+
+
+        await loadProfile();
+
+      }
+
+
+      updateNavigation();
+
+    }
+  );
+
+
+
+/* =====================================
+   AUTH STATE LISTENER
+===================================== */
+
+skillBridgeSupabase
+  .auth
+  .onAuthStateChange(
+    function(event, session) {
+
+      if (session) {
+
+        currentUser =
+          session.user;
+
+      } else {
+
+        currentUser = null;
+
+      }
+
+
+      updateNavigation();
+
+    }
+  );
+
+
+
+/* =====================================
+   INITIAL STATE
+===================================== */
+
+updateNavigation();
+
+</script>
+
+</body>
+</html>
