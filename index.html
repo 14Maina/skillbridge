@@ -1,881 +1,653 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<title>SkillBridge | Work. Skills. Trust. Anywhere.</title>
 
-<!-- Supabase JavaScript Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<title>SkillBridge | Work. Skills. Trust.</title>
-
 <style>
-
-* {
-  box-sizing: border-box;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f7f6;
-  color: #222;
+body{
+  font-family:Arial,sans-serif;
+  background:#f5f7f6;
+  color:#18352c;
+  line-height:1.6;
 }
 
-header {
-  background: #123b30;
-  color: white;
-  padding: 25px 15px;
-  text-align: center;
+header{
+  background:#123b30;
+  color:white;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
 }
 
-header h1 {
-  margin: 0;
+.logo{
+  font-size:22px;
+  font-weight:bold;
 }
 
-nav {
-  margin-top: 15px;
+nav{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
 }
 
-button {
-  background: #1d604b;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 6px;
-  cursor: pointer;
+nav button{
+  background:none;
+  border:0;
+  color:white;
+  padding:9px 12px;
+  cursor:pointer;
+  border-radius:6px;
 }
 
-button:hover {
-  opacity: 0.9;
+nav button:hover{
+  background:#1d604b;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:25px 18px;
+}
+
+.hero{
+  background:#123b30;
+  color:white;
+  padding:55px 25px;
+  text-align:center;
+}
+
+.hero h1{
+  font-size:38px;
+  margin-bottom:12px;
+}
+
+.hero p{
+  max-width:650px;
+  margin:0 auto 22px;
+}
+
+.btn{
+  border:0;
+  padding:11px 17px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
+  background:#edc65a;
+  color:#17352c;
+  margin:4px;
+}
+
+.btn.secondary{
+  background:#1d604b;
+  color:white;
+}
+
+.btn.danger{
+  background:#b42318;
+  color:white;
+}
+
+.btn.light{
+  background:white;
+  color:#123b30;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  margin:15px 0;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.card h3{
+  margin-bottom:7px;
 }
 
 input,
-select,
-textarea {
-  width: 100%;
-  padding: 11px;
-  margin: 7px 0 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+textarea,
+select{
+  width:100%;
+  padding:11px;
+  margin:6px 0 13px;
+  border:1px solid #ccd5d1;
+  border-radius:7px;
+  font-size:15px;
 }
 
-textarea {
-  min-height: 120px;
+textarea{
+  min-height:120px;
+  resize:vertical;
 }
 
-.hidden {
-  display: none !important;
+label{
+  font-weight:bold;
+  display:block;
+  margin-top:8px;
 }
 
-.hero {
-  text-align: center;
-  padding: 45px 15px;
-  background: white;
+.hidden{
+  display:none !important;
 }
 
-main {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
+.message{
+  padding:12px;
+  margin:10px 0;
+  border-radius:7px;
+  background:#eef7f2;
 }
 
-.card {
-  background: white;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+.error{
+  background:#fff0f0;
+  color:#9b1c1c;
 }
 
-.badge {
-  display: inline-block;
-  background: #e6f2ed;
-  color: #1d604b;
-  padding: 6px 10px;
-  border-radius: 20px;
-  margin: 3px;
-  font-size: 13px;
+.success{
+  background:#edf9f0;
+  color:#146c2e;
 }
 
-.safe {
-  border-left: 5px solid #1d604b;
+.job{
+  border-left:5px solid #1d604b;
 }
 
-footer {
-  text-align: center;
-  padding: 25px 15px;
-  color: #666;
+.badge{
+  display:inline-block;
+  background:#e8f0ed;
+  color:#123b30;
+  padding:4px 9px;
+  border-radius:15px;
+  font-size:13px;
+  margin:3px;
 }
 
-.profile-skill {
-  display: inline-block;
-  background: #e6f2ed;
-  color: #1d604b;
-  padding: 7px 11px;
-  border-radius: 20px;
-  margin: 4px;
-  font-size: 13px;
+.small{
+  color:#64746e;
+  font-size:14px;
 }
 
+footer{
+  background:#123b30;
+  color:white;
+  text-align:center;
+  padding:25px;
+  margin-top:40px;
+}
+
+.stat{
+  display:inline-block;
+  background:#eef4f1;
+  padding:12px;
+  margin:5px;
+  border-radius:7px;
+}
+
+@media(max-width:600px){
+  .hero h1{
+    font-size:29px;
+  }
+
+  header{
+    align-items:flex-start;
+    gap:10px;
+  }
+}
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =========================
-     HEADER
-========================= -->
-
 <header>
 
-  <h1>SkillBridge</h1>
+  <div class="logo">SkillBridge</div>
 
-  <p>
-    Work. Skills. Trust. Anywhere.
-  </p>
+  <nav id="navGuest">
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('jobs')">Find Jobs</button>
+    <button onclick="showPage('login')">Login</button>
+    <button onclick="showPage('register')">Register</button>
+  </nav>
 
-
-  <nav id="mainNav">
-
-    <button onclick="showPage('home')">
-      Home
-    </button>
-
-    <button onclick="showPage('jobs')">
-      Find Jobs
-    </button>
-
-    <button onclick="showPage('post')">
-      Post Job
-    </button>
-
-
-    <!-- GUEST MENU -->
-
-    <span id="guestNav">
-
-      <button onclick="showPage('login')">
-        Login
-      </button>
-
-      <button onclick="showPage('register')">
-        Register
-      </button>
-
-    </span>
-
-
-    <!-- LOGGED-IN MENU -->
-
-    <span id="userNav" class="hidden">
-
-      <button onclick="openDashboard()">
-        Dashboard
-      </button>
-
-      <button onclick="logout()">
-        Logout
-      </button>
-
-    </span>
-
+  <nav id="navUser" class="hidden">
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('jobs')">Find Jobs</button>
+    <button id="postJobNav" onclick="showPage('postjob')">Post Job</button>
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="logout()">Logout</button>
   </nav>
 
 </header>
 
 
+<!-- HOME -->
 
-<!-- =========================
-     HERO
-========================= -->
+<section id="page-home">
 
-<section class="hero">
+  <div class="hero">
 
-  <h2>
-    Your Skills. Your Opportunity.
-  </h2>
-
-  <p>
-    Connect with people who need your skills.
-  </p>
-
-  <button onclick="showPage('jobs')">
-    Find Jobs
-  </button>
-
-  <button onclick="showPage('post')">
-    Post a Job
-  </button>
-
-</section>
-
-
-
-<main>
-
-
-<!-- =========================
-     HOME
-========================= -->
-
-<section id="home">
-
-  <div class="card">
-
-    <h2>
-      Welcome to SkillBridge 🌍
-    </h2>
+    <h1>Your Skills. Your Opportunity.</h1>
 
     <p>
-      SkillBridge is designed to connect skilled people
-      with clients around the world through honest and
-      lawful work.
+      SkillBridge connects skilled people with clients
+      through honest, trusted and lawful work.
     </p>
 
-
-    <h3>
-      Popular Skills
-    </h3>
-
-    <span class="badge">
-      Graphic Design
-    </span>
-
-    <span class="badge">
-      Writing
-    </span>
-
-    <span class="badge">
-      Translation
-    </span>
-
-    <span class="badge">
-      Video Editing
-    </span>
-
-    <span class="badge">
-      Social Media
-    </span>
-
-    <span class="badge">
-      Virtual Assistance
-    </span>
-
-  </div>
-
-
-  <div class="card safe">
-
-    <h2>
-      🛡️ SkillBridge Safety
-    </h2>
-
-    <p>
-      We aim to build a trusted marketplace where users
-      can identify suspicious activity and report scams.
-    </p>
-
-    <button onclick="showPage('safety')">
-      Safety Center
-    </button>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     JOBS
-========================= -->
-
-<section id="jobs" class="hidden">
-
-  <h2>
-    Available Jobs
-  </h2>
-
-  <div id="jobList"></div>
-
-  <button onclick="showPage('post')">
-    Post a Job
-  </button>
-
-</section>
-
-
-
-<!-- =========================
-     POST JOB
-========================= -->
-
-<section id="post" class="hidden">
-
-  <div class="card">
-
-    <h2>
-      📢 Post a Job
-    </h2>
-
-    <form id="jobForm">
-
-      <label>
-        Job Title
-      </label>
-
-      <input
-        id="title"
-        required
-        placeholder="Example: Design a business logo"
-      >
-
-
-      <label>
-        Category
-      </label>
-
-      <select
-        id="category"
-        required
-      >
-
-        <option value="">
-          Choose a skill
-        </option>
-
-        <option>
-          Graphic Design
-        </option>
-
-        <option>
-          Video Editing
-        </option>
-
-        <option>
-          Writing & Translation
-        </option>
-
-        <option>
-          Social Media
-        </option>
-
-        <option>
-          Virtual Assistant
-        </option>
-
-        <option>
-          Programming
-        </option>
-
-        <option>
-          Other lawful work
-        </option>
-
-      </select>
-
-
-      <label>
-        Budget in Naira
-      </label>
-
-      <input
-        id="budget"
-        type="number"
-        min="1"
-        required
-        placeholder="Example: 20000"
-      >
-
-
-      <label>
-        Job Description
-      </label>
-
-      <textarea
-        id="description"
-        required
-        placeholder="Describe the work..."
-      ></textarea>
-
-
-      <button type="submit">
-        Publish Job
-      </button>
-
-    </form>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     APPLY
-========================= -->
-
-<section id="apply" class="hidden">
-
-  <div class="card">
-
-    <h2>
-      📝 Apply for Job
-    </h2>
-
-    <p id="selectedJob"></p>
-
-
-    <form id="applyForm">
-
-      <label>
-        Your Name
-      </label>
-
-      <input
-        id="workerName"
-        required
-      >
-
-
-      <label>
-        Your Main Skill
-      </label>
-
-      <input
-        id="workerSkill"
-        required
-        placeholder="Example: Graphic Design"
-      >
-
-
-      <label>
-        Your Proposal
-      </label>
-
-      <textarea
-        id="proposal"
-        required
-        placeholder="Explain why you are suitable for this job..."
-      ></textarea>
-
-
-      <button type="submit">
-        Submit Application
-      </button>
-
-    </form>
-
-
-    <p id="applyMessage"></p>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     LOGIN
-========================= -->
-
-<section id="login" class="hidden">
-
-  <div class="card">
-
-    <h2>
-      🔐 Login
-    </h2>
-
-    <p>
-      Login to access your SkillBridge account.
-    </p>
-
-
-    <form id="loginForm">
-
-      <label>
-        Email
-      </label>
-
-      <input
-        id="loginEmail"
-        type="email"
-        required
-        placeholder="you@example.com"
-      >
-
-
-      <label>
-        Password
-      </label>
-
-      <input
-        id="loginPassword"
-        type="password"
-        required
-        placeholder="Your password"
-      >
-
-
-      <button type="submit">
-        Login
-      </button>
-
-    </form>
-
-
-    <p id="loginMessage"></p>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     REGISTER
-========================= -->
-
-<section id="register" class="hidden">
-
-  <div class="card">
-
-    <h2>
-      👤 Create Account
-    </h2>
-
-
-    <form id="registerForm">
-
-      <label>
-        Full Name
-      </label>
-
-      <input
-        id="registerName"
-        required
-        placeholder="Your full name"
-      >
-
-
-      <label>
-        Email
-      </label>
-
-      <input
-        id="registerEmail"
-        type="email"
-        required
-        placeholder="you@example.com"
-      >
-
-
-      <label>
-        I want to...
-      </label>
-
-      <select
-        id="userType"
-        required
-      >
-
-        <option value="">
-          Choose one
-        </option>
-
-        <option value="worker">
-          Find work
-        </option>
-
-        <option value="client">
-          Hire skilled people
-        </option>
-
-      </select>
-
-
-      <label>
-        Password
-      </label>
-
-      <input
-        id="registerPassword"
-        type="password"
-        minlength="8"
-        required
-        placeholder="At least 8 characters"
-      >
-
-
-      <button type="submit">
-        Create Account
-      </button>
-
-    </form>
-
-
-    <p id="registerMessage"></p>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     DASHBOARD
-========================= -->
-
-<section id="dashboard" class="hidden">
-
-  <div class="card">
-
-    <h2>
-      👤 My Dashboard
-    </h2>
-
-
-    <p id="welcomeUser"></p>
-
-
-    <h3>
-      My SkillBridge Profile
-    </h3>
-
-
-    <p>
-      <strong>
-        Account Type:
-      </strong>
-
-      <span id="accountType"></span>
-    </p>
-
-
-    <p>
-      <strong>
-        Country:
-      </strong>
-
-      <span id="profileCountryDisplay">
-        Not added
-      </span>
-    </p>
-
-
-    <p>
-      <strong>
-        Skills:
-      </strong>
-    </p>
-
-
-    <div id="profileSkillsDisplay">
-      <span class="badge">
-        No skills added
-      </span>
-    </div>
-
-
-    <p>
-      <strong>
-        Trust Score:
-      </strong>
-
-      New Account
-    </p>
-
-
-    <span
-      id="profileStatus"
-      class="badge"
-    >
-      Profile Incomplete
-    </span>
-
-
-    <br><br>
-
-
-    <button onclick="showPage('profile')">
-      ✏️ Edit Profile
-    </button>
-
-
-    <button onclick="showPage('jobs')">
+    <button class="btn" onclick="showPage('jobs')">
       Find Jobs
     </button>
 
-
-    <button onclick="showPage('post')">
-      Post Job
+    <button class="btn light" onclick="showPage('postjob')">
+      Post a Job
     </button>
 
+  </div>
 
-    <button onclick="logout()">
-      Logout
-    </button>
+  <div class="container">
+
+    <div class="card">
+
+      <h2>Popular Skills</h2>
+
+      <p>
+        <span class="badge">Graphic Design</span>
+        <span class="badge">Writing</span>
+        <span class="badge">Translation</span>
+        <span class="badge">Video Editing</span>
+        <span class="badge">Data Entry</span>
+        <span class="badge">Mathematics</span>
+        <span class="badge">Computer Skills</span>
+        <span class="badge">Virtual Assistance</span>
+      </p>
+
+    </div>
+
+    <div class="card">
+
+      <h2>SkillBridge Safety</h2>
+
+      <p>
+        We want SkillBridge to be a trusted marketplace.
+        Users should report suspicious jobs, scams and
+        suspicious accounts.
+      </p>
+
+      <button class="btn secondary"
+              onclick="showPage('safety')">
+        Safety Center
+      </button>
+
+    </div>
 
   </div>
 
 </section>
 
 
+<!-- LOGIN -->
 
-<!-- =========================
-     PROFILE
-========================= -->
+<section id="page-login" class="hidden">
 
-<section id="profile" class="hidden">
+  <div class="container">
 
-  <div class="card">
+    <div class="card">
 
-    <h2>
-      ✏️ Edit My Profile
-    </h2>
+      <h2>Login</h2>
+
+      <div id="loginMessage"></div>
+
+      <label>Email</label>
+      <input id="loginEmail"
+             type="email"
+             placeholder="you@example.com">
+
+      <label>Password</label>
+      <input id="loginPassword"
+             type="password"
+             placeholder="Password">
+
+      <button class="btn"
+              onclick="login()">
+        Login
+      </button>
+
+      <button class="btn secondary"
+              onclick="showPage('register')">
+        Create Account
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
 
 
-    <form id="profileForm">
+<!-- REGISTER -->
 
-      <label>
-        Full Name
-      </label>
+<section id="page-register" class="hidden">
 
-      <input
-        id="profileName"
-        required
-        placeholder="Your full name"
-      >
+  <div class="container">
+
+    <div class="card">
+
+      <h2>Create SkillBridge Account</h2>
+
+      <div id="registerMessage"></div>
+
+      <label>Full Name</label>
+
+      <input id="registerName"
+             type="text"
+             placeholder="Your full name">
+
+      <label>Email</label>
+
+      <input id="registerEmail"
+             type="email"
+             placeholder="you@example.com">
+
+      <label>Password</label>
+
+      <input id="registerPassword"
+             type="password"
+             placeholder="At least 6 characters">
+
+      <label>Account Type</label>
+
+      <select id="registerType">
+
+        <option value="worker">
+          Job Seeker / Worker
+        </option>
+
+        <option value="client">
+          Client / Employer
+        </option>
+
+      </select>
+
+      <button class="btn"
+              onclick="register()">
+        Register
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
 
 
-      <label>
-        Country
-      </label>
+<!-- DASHBOARD -->
 
-      <input
-        id="profileCountry"
-        required
-        placeholder="Your country"
-      >
+<section id="page-dashboard" class="hidden">
 
+  <div class="container">
 
-      <label>
-        Your Skills
-      </label>
+    <h2>Dashboard</h2>
 
-      <input
-        id="profileSkills"
-        required
-        placeholder="Example: Mathematics, Data Entry, Graphic Design"
-      >
+    <div id="dashboardMessage"></div>
 
+    <div class="card">
+
+      <h3 id="welcomeName">
+        Welcome!
+      </h3>
 
       <p>
+        <strong>Account Type:</strong>
+        <span id="dashType"></span>
+      </p>
+
+      <p>
+        <strong>Country:</strong>
+        <span id="dashCountry"></span>
+      </p>
+
+      <p>
+        <strong>Skills:</strong>
+        <span id="dashSkills"></span>
+      </p>
+
+      <p>
+        <strong>Trust Score:</strong>
+        <span id="dashTrust"></span>
+      </p>
+
+      <p id="profileStatus"></p>
+
+      <button class="btn"
+              onclick="showPage('profile')">
+        Edit Profile
+      </button>
+
+      <button class="btn secondary"
+              onclick="showPage('jobs')">
+        Find Jobs
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section id="page-profile" class="hidden">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h2>Edit Profile</h2>
+
+      <div id="profileMessage"></div>
+
+      <label>Full Name</label>
+
+      <input id="profileName"
+             type="text">
+
+      <label>Country</label>
+
+      <input id="profileCountry"
+             type="text"
+             placeholder="Nigeria">
+
+      <label>Skills</label>
+
+      <input id="profileSkills"
+             type="text"
+             placeholder="Graphic design, Writing">
+
+      <p class="small">
         Separate multiple skills with commas.
       </p>
 
-
-      <button type="submit">
-        💾 Save Profile
+      <button class="btn"
+              onclick="saveProfile()">
+        Save Profile
       </button>
 
-    </form>
+      <button class="btn secondary"
+              onclick="showPage('dashboard')">
+        Back
+      </button>
 
-
-    <p id="profileMessage"></p>
-
-
-    <button onclick="openDashboard()">
-      ← Back to Dashboard
-    </button>
+    </div>
 
   </div>
 
 </section>
 
 
+<!-- JOBS -->
 
-<!-- =========================
-     SAFETY
-========================= -->
+<section id="page-jobs" class="hidden">
 
-<section id="safety" class="hidden">
+  <div class="container">
 
-  <div class="card safe">
+    <h2>Find Jobs</h2>
 
-    <h2>
-      🛡️ Safety Center
-    </h2>
+    <div id="jobsMessage"></div>
 
-
-    <h3>
-      Protect Yourself
-    </h3>
-
-
-    <ul>
-
-      <li>
-        Do not share your password.
-      </li>
-
-      <li>
-        Never share OTP codes.
-      </li>
-
-      <li>
-        Be careful with suspicious payment requests.
-      </li>
-
-      <li>
-        Do not accept fake jobs or illegal work.
-      </li>
-
-      <li>
-        Report suspicious users.
-      </li>
-
-    </ul>
-
-
-    <h3>
-      🚨 Report Suspicious Activity
-    </h3>
-
-
-    <textarea
-      id="reportText"
-      placeholder="Describe the suspicious activity..."
-    ></textarea>
-
-
-    <button onclick="submitReport()">
-      Submit Test Report
-    </button>
-
-
-    <p id="reportMessage"></p>
+    <div id="jobsList">
+      Loading jobs...
+    </div>
 
   </div>
 
 </section>
 
 
-</main>
+<!-- POST JOB -->
+
+<section id="page-postjob" class="hidden">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h2>Post a Job</h2>
+
+      <div id="postJobMessage"></div>
+
+      <label>Job Title</label>
+
+      <input id="jobTitle"
+             type="text"
+             placeholder="Example: Graphic Designer Needed">
+
+      <label>Category</label>
+
+      <select id="jobCategory">
+
+        <option>Graphic Design</option>
+        <option>Writing</option>
+        <option>Translation</option>
+        <option>Video Editing</option>
+        <option>Data Entry</option>
+        <option>Computer Skills</option>
+        <option>Mathematics</option>
+        <option>Virtual Assistance</option>
+        <option>Other</option>
+
+      </select>
+
+      <label>Description</label>
+
+      <textarea id="jobDescription"
+        placeholder="Describe the work clearly..."></textarea>
+
+      <label>Budget</label>
+
+      <input id="jobBudget"
+             type="number"
+             min="1"
+             placeholder="Example: 20000">
+
+      <button class="btn"
+              onclick="postJob()">
+        Post Job
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
 
 
+<!-- APPLY -->
 
-<!-- =========================
-     FOOTER
-========================= -->
+<section id="page-apply" class="hidden">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h2>Apply for Job</h2>
+
+      <div id="applyMessage"></div>
+
+      <div id="selectedJob"></div>
+
+      <label>Your Proposal</label>
+
+      <textarea id="proposal"
+        placeholder="Explain why you are suitable for this job..."></textarea>
+
+      <button class="btn"
+              onclick="submitApplication()">
+        Submit Application
+      </button>
+
+      <button class="btn secondary"
+              onclick="showPage('jobs')">
+        Back to Jobs
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SAFETY -->
+
+<section id="page-safety" class="hidden">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h2>SkillBridge Safety Center</h2>
+
+      <p>
+        Never send your password to another person.
+      </p>
+
+      <p>
+        Be careful with requests for money before work
+        begins.
+      </p>
+
+      <p>
+        Report suspicious jobs or accounts.
+      </p>
+
+      <p>
+        Do not share sensitive personal information
+        unnecessarily.
+      </p>
+
+      <button class="btn secondary"
+              onclick="showPage('home')">
+        Back Home
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
 
 <footer>
 
@@ -887,530 +659,458 @@ footer {
     Honest work. Trusted skills. Global opportunities.
   </p>
 
-  <p>
+  <p class="small">
     Secure authentication powered by Supabase.
   </p>
 
 </footer>
 
 
-
 <script>
 
-/* =====================================
+/* =====================================================
    SUPABASE CONNECTION
-===================================== */
+   ===================================================== */
 
 const SUPABASE_URL =
-  'https://vajdpwsafqbdpnegmfvr.supabase.co';
+  "https://vajdpwsafqbdpnegmfvr.supabase.co";
 
+/*
+ IMPORTANT:
+ Put your existing PUBLISHABLE key between the quotes below.
+
+ Do NOT put your secret key here.
+ Do NOT put your database password here.
+*/
 
 const SUPABASE_PUBLISHABLE_KEY =
-  'sb_publishable_m4t60b903KsPTg5hsBKwNQ_9w5h5DQA';
+  "sb_publishable_m4t60b903KsPTg5hsBKwNQ_9w5h5DQA";
 
-
-const skillBridgeSupabase =
+const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
 
 
-
-/* =====================================
+/* =====================================================
    GLOBAL VARIABLES
-===================================== */
-
-let jobs = [];
-
-let selected = null;
+   ===================================================== */
 
 let currentUser = null;
+let currentProfile = null;
+let selectedJob = null;
+let jobs = [];
 
 
+/* =====================================================
+   HELPER
+   ===================================================== */
 
-/* =====================================
-   PAGE NAVIGATION
-===================================== */
+function safe(value){
 
-function showPage(page) {
+  if(value === null || value === undefined){
+    return "";
+  }
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+function message(elementId,text,type="success"){
+
+  const el = document.getElementById(elementId);
+
+  if(!el) return;
+
+  el.innerHTML =
+    `<div class="message ${type}">
+      ${safe(text)}
+    </div>`;
+}
+
+
+/* =====================================================
+   PAGE SYSTEM
+   ===================================================== */
+
+function showPage(page){
 
   const pages = [
-    'home',
-    'jobs',
-    'post',
-    'apply',
-    'login',
-    'register',
-    'dashboard',
-    'profile',
-    'safety'
+    "home",
+    "login",
+    "register",
+    "dashboard",
+    "profile",
+    "jobs",
+    "postjob",
+    "apply",
+    "safety"
   ];
 
+  pages.forEach(name => {
 
-  pages.forEach(function(id) {
+    const el =
+      document.getElementById("page-" + name);
 
-    const element =
-      document.getElementById(id);
-
-    if (element) {
-      element.classList.add('hidden');
+    if(el){
+      el.classList.add("hidden");
     }
 
   });
 
 
-  const selectedPage =
-    document.getElementById(page);
+  const target =
+    document.getElementById("page-" + page);
 
-
-  if (selectedPage) {
-    selectedPage.classList.remove('hidden');
+  if(target){
+    target.classList.remove("hidden");
   }
 
 
-  if (page === 'jobs') {
-    renderJobs();
+  if(page === "jobs"){
+    loadJobs();
   }
 
-
-  if (page === 'profile') {
-    fillProfileForm();
+  if(page === "dashboard"){
+    loadDashboard();
   }
 
+  if(page === "profile"){
+    loadProfile();
+  }
 
-  window.scrollTo(0, 0);
+  if(page === "postjob"){
+    checkCanPostJob();
+  }
 }
 
 
+/* =====================================================
+   AUTH STATE
+   ===================================================== */
 
-/* =====================================
-   NAVIGATION STATE
-===================================== */
+async function loadSession(){
 
-function updateNavigation() {
+  const {
+    data,
+    error
+  } = await supabaseClient.auth.getSession();
 
-  const guestNav =
-    document.getElementById('guestNav');
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  currentUser = data.session
+    ? data.session.user
+    : null;
+
+  await refreshUI();
+}
+
+
+async function refreshUI(){
+
+  const guest =
+    document.getElementById("navGuest");
 
   const userNav =
-    document.getElementById('userNav');
+    document.getElementById("navUser");
+
+  if(currentUser){
+
+    guest.classList.add("hidden");
+    userNav.classList.remove("hidden");
+
+    await loadCurrentProfile();
+
+  }else{
+
+    guest.classList.remove("hidden");
+    userNav.classList.add("hidden");
+
+    currentProfile = null;
+  }
+}
 
 
-  if (!guestNav || !userNav) {
+/* =====================================================
+   PROFILE
+   ===================================================== */
+
+async function loadCurrentProfile(){
+
+  if(!currentUser){
+    return null;
+  }
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id",currentUser.id)
+    .single();
+
+  if(error){
+
+    console.error("Profile error:",error);
+
+    currentProfile = null;
+
+    return null;
+  }
+
+  currentProfile = data;
+
+  return data;
+}
+
+
+async function loadDashboard(){
+
+  if(!currentUser){
+
+    showPage("login");
+
+    return;
+  }
+
+  const profile =
+    await loadCurrentProfile();
+
+  if(!profile){
+
+    message(
+      "dashboardMessage",
+      "Your profile could not be loaded.",
+      "error"
+    );
+
     return;
   }
 
 
-  if (currentUser) {
+  document.getElementById("welcomeName")
+    .textContent =
+    "Welcome, " +
+    (profile.full_name || "SkillBridge User") +
+    "!";
 
-    guestNav.classList.add('hidden');
 
-    userNav.classList.remove('hidden');
+  document.getElementById("dashType")
+    .textContent =
+    profile.account_type === "client"
+      ? "Client / Employer"
+      : "Job Seeker";
 
-  } else {
 
-    guestNav.classList.remove('hidden');
+  document.getElementById("dashCountry")
+    .textContent =
+    profile.country || "Not set";
 
-    userNav.classList.add('hidden');
 
+  document.getElementById("dashSkills")
+    .textContent =
+    profile.skills && profile.skills.length
+      ? profile.skills.join(", ")
+      : "Not set";
+
+
+  document.getElementById("dashTrust")
+    .textContent =
+    profile.trust_score === null ||
+    profile.trust_score === undefined
+      ? "New Account"
+      : profile.trust_score;
+
+
+  const complete =
+    profile.full_name &&
+    profile.country &&
+    profile.skills &&
+    profile.skills.length > 0;
+
+
+  document.getElementById("profileStatus")
+    .innerHTML =
+    complete
+      ? `<span class="message success">✅ Profile Complete</span>`
+      : `<span class="message error">⚠️ Profile Incomplete</span>`;
+}
+
+
+async function loadProfile(){
+
+  if(!currentUser){
+
+    showPage("login");
+
+    return;
   }
 
+  const profile =
+    await loadCurrentProfile();
+
+  if(!profile) return;
+
+
+  document.getElementById("profileName")
+    .value =
+    profile.full_name || "";
+
+
+  document.getElementById("profileCountry")
+    .value =
+    profile.country || "";
+
+
+  document.getElementById("profileSkills")
+    .value =
+    profile.skills
+      ? profile.skills.join(", ")
+      : "";
 }
 
 
+async function saveProfile(){
 
-/* =====================================
-   SAFE TEXT
-===================================== */
+  if(!currentUser){
 
-function safe(text) {
-
-  const el =
-    document.createElement('span');
-
-  el.textContent = text;
-
-  return el.innerHTML;
-
-}
-
-
-
-/* =====================================
-   JOB LIST
-===================================== */
-
-function renderJobs() {
-
-  const list =
-    document.getElementById('jobList');
-
-
-  if (jobs.length === 0) {
-
-    list.innerHTML = `
-      <div class="card">
-        No jobs yet.
-        Be the first person to post a lawful job.
-      </div>
-    `;
+    showPage("login");
 
     return;
   }
 
 
-  list.innerHTML = '';
+  const fullName =
+    document.getElementById("profileName")
+      .value.trim();
 
 
-  jobs.forEach(function(job, i) {
+  const country =
+    document.getElementById("profileCountry")
+      .value.trim();
 
-    list.innerHTML += `
 
-      <div class="card">
+  const skillsText =
+    document.getElementById("profileSkills")
+      .value.trim();
 
-        <h3>
-          ${safe(job.title)}
-        </h3>
 
-        <p>
-          <strong>
-            Category:
-          </strong>
+  const skills =
+    skillsText
+      ? skillsText
+          .split(",")
+          .map(x => x.trim())
+          .filter(Boolean)
+      : [];
 
-          ${safe(job.category)}
-        </p>
 
-        <h3>
-          ₦${job.budget.toLocaleString()}
-        </h3>
+  if(!fullName){
 
-        <p>
-          ${safe(job.description)}
-        </p>
+    message(
+      "profileMessage",
+      "Please enter your full name.",
+      "error"
+    );
 
-        <button onclick="openApply(${i})">
-          Apply Now
-        </button>
+    return;
+  }
 
-      </div>
 
-    `;
+  const {
+    error
+  } = await supabaseClient
+    .from("profiles")
+    .update({
+      full_name: fullName,
+      country: country,
+      skills: skills
+    })
+    .eq("id",currentUser.id);
 
-  });
 
+  if(error){
+
+    console.error(error);
+
+    message(
+      "profileMessage",
+      error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  await loadCurrentProfile();
+
+  message(
+    "profileMessage",
+    "Profile saved successfully."
+  );
+
+  setTimeout(() => {
+    showPage("dashboard");
+  },700);
 }
 
 
-
-/* =====================================
-   POST JOB
-===================================== */
-
-document
-  .getElementById('jobForm')
-  .addEventListener(
-    'submit',
-    function(e) {
-
-      e.preventDefault();
-
-
-      jobs.push({
-
-        title:
-          document.getElementById(
-            'title'
-          ).value,
-
-        category:
-          document.getElementById(
-            'category'
-          ).value,
-
-        budget:
-          Number(
-            document.getElementById(
-              'budget'
-            ).value
-          ),
-
-        description:
-          document.getElementById(
-            'description'
-          ).value
-
-      });
-
-
-      this.reset();
-
-
-      alert(
-        'Job added to this prototype.'
-      );
-
-
-      showPage('jobs');
-
-    }
-  );
-
-
-
-/* =====================================
-   APPLY
-===================================== */
-
-function openApply(index) {
-
-  selected =
-    jobs[index];
-
-
-  document.getElementById(
-    'selectedJob'
-  ).textContent =
-    selected.title +
-    ' — ₦' +
-    selected.budget.toLocaleString();
-
-
-  document.getElementById(
-    'applyMessage'
-  ).textContent = '';
-
-
-  showPage('apply');
-
-}
-
-
-
-document
-  .getElementById('applyForm')
-  .addEventListener(
-    'submit',
-    function(e) {
-
-      e.preventDefault();
-
-
-      document.getElementById(
-        'applyMessage'
-      ).textContent =
-        'Application recorded in this prototype. It has not been sent to a real client yet.';
-
-
-      this.reset();
-
-    }
-  );
-
-
-
-/* =====================================
+/* =====================================================
    REGISTER
-===================================== */
+   ===================================================== */
 
-document
-  .getElementById('registerForm')
-  .addEventListener(
-    'submit',
-    async function(e) {
+async function register(){
 
-      e.preventDefault();
+  const name =
+    document.getElementById("registerName")
+      .value.trim();
 
 
-      const name =
-        document.getElementById(
-          'registerName'
-        ).value.trim();
+  const email =
+    document.getElementById("registerEmail")
+      .value.trim();
 
 
-      const email =
-        document.getElementById(
-          'registerEmail'
-        ).value.trim();
+  const password =
+    document.getElementById("registerPassword")
+      .value;
 
 
-      const password =
-        document.getElementById(
-          'registerPassword'
-        ).value;
+  const accountType =
+    document.getElementById("registerType")
+      .value;
 
 
-      const type =
-        document.getElementById(
-          'userType'
-        ).value;
+  if(!name || !email || !password){
 
+    message(
+      "registerMessage",
+      "Please complete all fields.",
+      "error"
+    );
 
-      const message =
-        document.getElementById(
-          'registerMessage'
-        );
+    return;
+  }
 
 
-      message.textContent =
-        'Creating your SkillBridge account...';
+  if(password.length < 6){
 
+    message(
+      "registerMessage",
+      "Password must contain at least 6 characters.",
+      "error"
+    );
 
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await skillBridgeSupabase
-            .auth
-            .signUp({
-
-              email: email,
-
-              password: password,
-
-              options: {
-
-                data: {
-
-                  full_name: name,
-
-                  account_type: type
-
-                }
-
-              }
-
-            });
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        message.textContent =
-          'Account created. Check your email to confirm your account.';
-
-
-        this.reset();
-
-
-      } catch (error) {
-
-        message.textContent =
-          'Registration error: ' +
-          error.message;
-
-      }
-
-    }
-  );
-
-
-
-/* =====================================
-   LOGIN
-===================================== */
-
-document
-  .getElementById('loginForm')
-  .addEventListener(
-    'submit',
-    async function(e) {
-
-      e.preventDefault();
-
-
-      const email =
-        document.getElementById(
-          'loginEmail'
-        ).value.trim();
-
-
-      const password =
-        document.getElementById(
-          'loginPassword'
-        ).value;
-
-
-      const message =
-        document.getElementById(
-          'loginMessage'
-        );
-
-
-      message.textContent =
-        'Logging in...';
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await skillBridgeSupabase
-            .auth
-            .signInWithPassword({
-
-              email: email,
-
-              password: password
-
-            });
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        currentUser =
-          data.user;
-
-
-        await loadProfile();
-
-
-        updateNavigation();
-
-
-        message.textContent =
-          'Login successful.';
-
-
-        setTimeout(
-          function() {
-
-            openDashboard();
-
-          },
-          400
-        );
-
-
-      } catch (error) {
-
-        message.textContent =
-          'Login error: ' +
-          error.message;
-
-      }
-
-    }
-  );
-
-
-
-/* =====================================
-   LOAD PROFILE
-===================================== */
-
-async function loadProfile() {
-
-  if (!currentUser) {
     return;
   }
 
@@ -1418,516 +1118,617 @@ async function loadProfile() {
   const {
     data,
     error
-  } =
-    await skillBridgeSupabase
-      .from('profiles')
-      .select(
-        'full_name, account_type, country, skills'
-      )
-      .eq(
-        'id',
-        currentUser.id
-      )
-      .single();
+  } = await supabaseClient.auth.signUp({
 
+    email: email,
 
-  if (error) {
+    password: password,
 
-    console.log(
-      'Profile loading error:',
-      error.message
-    );
-
-    return;
-  }
-
-
-  currentUser.profile =
-    data;
-
-
-  updateDashboardProfile();
-
-}
-
-
-
-/* =====================================
-   UPDATE DASHBOARD PROFILE
-===================================== */
-
-function updateDashboardProfile() {
-
-  if (!currentUser) {
-    return;
-  }
-
-
-  const profile =currentUser.profile;
-
-
-  if (!profile) {
-    return;
-  }
-
-
-  document.getElementById(
-    'welcomeUser'
-  ).textContent =
-    'Welcome, ' +
-    (
-      profile.full_name ||
-      currentUser.email
-    ) +
-    '!';
-
-
-  document.getElementById(
-    'accountType'
-  ).textContent =
-    profile.account_type === 'worker'
-      ? 'Job Seeker'
-      : 'Client / Employer';
-
-
-  document.getElementById(
-    'profileCountryDisplay'
-  ).textContent =
-    profile.country ||
-    'Not added';
-
-
-  const skillsContainer =
-    document.getElementById(
-      'profileSkillsDisplay'
-    );
-
-
-  if (
-    Array.isArray(profile.skills) &&
-    profile.skills.length > 0
-  ) {
-
-    skillsContainer.innerHTML =
-      profile.skills
-        .map(function(skill) {
-
-          return `
-            <span class="profile-skill">
-              ${safe(skill)}
-            </span>
-          `;
-
-        })
-        .join('');
-
-  } else {
-
-    skillsContainer.innerHTML = `
-      <span class="badge">
-        No skills added
-      </span>
-    `;
-
-  }
-
-
-  updateProfileStatus();
-
-}
-
-
-
-/* =====================================
-   PROFILE STATUS
-===================================== */
-
-function updateProfileStatus() {
-
-  const status =
-    document.getElementById(
-      'profileStatus'
-    );
-
-
-  if (!status || !currentUser?.profile) {
-    return;
-  }
-
-
-  const profile =
-    currentUser.profile;
-
-
-  const complete =
-    Boolean(profile.full_name) &&
-    Boolean(profile.country) &&
-    Array.isArray(profile.skills) &&
-    profile.skills.length > 0;
-
-
-  if (complete) {
-
-    status.textContent =
-      '✅ Profile Complete';
-
-  } else {
-
-    status.textContent =
-      'Profile Incomplete';
-
-  }
-
-}
-
-
-
-/* =====================================
-   FILL PROFILE FORM
-===================================== */
-
-function fillProfileForm() {
-
-  if (!currentUser?.profile) {
-    return;
-  }
-
-
-  const profile =
-    currentUser.profile;
-
-
-  document.getElementById(
-    'profileName'
-  ).value =
-    profile.full_name || '';
-
-
-  document.getElementById(
-    'profileCountry'
-  ).value =
-    profile.country || 'Nigeria';
-
-
-  document.getElementById(
-    'profileSkills'
-  ).value =
-    Array.isArray(profile.skills)
-      ? profile.skills.join(', ')
-      : '';
-
-}
-
-
-
-/* =====================================
-   SAVE PROFILE
-===================================== */
-
-document
-  .getElementById('profileForm')
-  .addEventListener(
-    'submit',
-    async function(e) {
-
-      e.preventDefault();
-
-
-      if (!currentUser) {
-
-        showPage('login');
-
-        return;
+    options:{
+      data:{
+        full_name:name,
+        account_type:accountType
       }
-
-
-      const fullName =
-        document.getElementById(
-          'profileName'
-        ).value.trim();
-
-
-      const country =
-        document.getElementById(
-          'profileCountry'
-        ).value.trim();
-
-
-      const skillsText =
-        document.getElementById(
-          'profileSkills'
-        ).value.trim();
-
-
-      const message =
-        document.getElementById(
-          'profileMessage'
-        );
-
-
-      const skills =
-        skillsText
-          .split(',')
-          .map(function(skill) {
-
-            return skill.trim();
-
-          })
-          .filter(function(skill) {
-
-            return skill.length > 0;
-
-          });
-
-
-      message.textContent =
-        'Saving your profile...';
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await skillBridgeSupabase
-            .from('profiles')
-            .update({
-
-              full_name: fullName,
-
-              country: country,
-
-              skills: skills
-
-            })
-            .eq(
-              'id',
-              currentUser.id
-            )
-            .select(
-              'full_name, account_type, country, skills'
-            )
-            .single();
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        currentUser.profile =
-          data;
-
-
-        updateDashboardProfile();
-
-
-        message.textContent =
-          '✅ Profile saved successfully.';
-
-
-        setTimeout(
-          function() {
-
-            openDashboard();
-
-          },
-          700
-        );
-
-
-      } catch (error) {
-
-        message.textContent =
-          'Profile error: ' +
-          error.message;
-
-      }
-
     }
-  );
+
+  });
 
 
+  if(error){
 
-/* =====================================
-   DASHBOARD
-===================================== */
+    message(
+      "registerMessage",
+      error.message,
+      "error"
+    );
 
-async function openDashboard() {
+    return;
+  }
+
+
+  if(data.session){
+
+    currentUser = data.session.user;
+
+    await refreshUI();
+
+    message(
+      "registerMessage",
+      "Account created successfully."
+    );
+
+    setTimeout(() => {
+      showPage("dashboard");
+    },700);
+
+  }else{
+
+    message(
+      "registerMessage",
+      "Registration successful. Please check your email and confirm your account."
+    );
+
+  }
+}
+
+
+/* =====================================================
+   LOGIN
+   ===================================================== */
+
+async function login(){
+
+  const email =
+    document.getElementById("loginEmail")
+      .value.trim();
+
+
+  const password =
+    document.getElementById("loginPassword")
+      .value;
+
+
+  if(!email || !password){
+
+    message(
+      "loginMessage",
+      "Please enter your email and password.",
+      "error"
+    );
+
+    return;
+  }
+
 
   const {
-    data: {
-      user
-    }
-  } =
-    await skillBridgeSupabase
-      .auth
-      .getUser();
-
-
-  if (!user) {
-
-    currentUser = null;
-
-    updateNavigation();
-
-    showPage('login');
-
-    return;
-  }
-
-
-  currentUser =
-    user;
-
-
-  await loadProfile();
-
-
-  updateNavigation();
-
-
-  showPage('dashboard');
-
-}
-
-
-
-/* =====================================
-   LOGOUT
-===================================== */
-
-async function logout() {
-
-  const {
+    data,
     error
-  } =
-    await skillBridgeSupabase
-      .auth
-      .signOut();
+  } = await supabaseClient.auth
+    .signInWithPassword({
+      email:email,
+      password:password
+    });
 
 
-  if (error) {
+  if(error){
 
-    alert(
-      'Logout error: ' +
-      error.message
+    message(
+      "loginMessage",
+      error.message,
+      "error"
     );
 
     return;
   }
 
+
+  currentUser = data.user;
+
+  await refreshUI();
+
+  showPage("dashboard");
+}
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
 
   currentUser = null;
+  currentProfile = null;
 
-
-  updateNavigation();
-
-
-  showPage('home');
-
+  showPage("home");
 }
 
 
+/* =====================================================
+   CHECK CLIENT
+   ===================================================== */
 
-/* =====================================
-   REPORT
-===================================== */
+async function checkCanPostJob(){
 
-function submitReport() {
+  if(!currentUser){
 
-  const text =
-    document.getElementById(
-      'reportText'
-    ).value.trim();
+    showPage("login");
+
+    return false;
+  }
 
 
-  if (!text) {
+  const profile =
+    await loadCurrentProfile();
 
-    alert(
-      'Please describe the suspicious activity first.'
+
+  if(!profile){
+
+    message(
+      "postJobMessage",
+      "Please complete your profile first.",
+      "error"
+    );
+
+    return false;
+  }
+
+
+  if(profile.account_type !== "client"){
+
+    message(
+      "postJobMessage",
+      "Only Client / Employer accounts can post jobs. Job Seekers can apply for jobs.",
+      "error"
+    );
+
+    return false;
+  }
+
+
+  return true;
+}
+
+
+/* =====================================================
+   POST JOB
+   ===================================================== */
+
+async function postJob(){
+
+  const allowed =
+    await checkCanPostJob();
+
+
+  if(!allowed) return;
+
+
+  const title =
+    document.getElementById("jobTitle")
+      .value.trim();
+
+
+  const category =
+    document.getElementById("jobCategory")
+      .value;
+
+
+  const description =
+    document.getElementById("jobDescription")
+      .value.trim();
+
+
+  const budget =
+    Number(
+      document.getElementById("jobBudget")
+        .value
+    );
+
+
+  if(!title ||
+     !description ||
+     !budget ||
+     budget <= 0){
+
+    message(
+      "postJobMessage",
+      "Please complete the job title, description and valid budget.",
+      "error"
     );
 
     return;
   }
 
 
-  document.getElementById(
-    'reportMessage'
-  ).textContent =
-    'Test report submitted. Secure database reporting will be connected next.';
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("jobs")
+    .insert({
+
+      client_id:currentUser.id,
+
+      title:title,
+
+      category:category,
+
+      description:description,
+
+      budget:budget,
+
+      currency:"NGN",
+
+      status:"open"
+
+    })
+    .select()
+    .single();
 
 
-  document.getElementById(
-    'reportText'
-  ).value = '';
+  if(error){
 
+    console.error(error);
+
+    message(
+      "postJobMessage",
+      error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  message(
+    "postJobMessage",
+    "✅ Job posted successfully."
+  );
+
+
+  document.getElementById("jobTitle").value = "";
+  document.getElementById("jobDescription").value = "";
+  document.getElementById("jobBudget").value = "";
+
+
+  setTimeout(() => {
+    showPage("jobs");
+  },800);
 }
 
 
+/* =====================================================
+   LOAD REAL JOBS
+   ===================================================== */
 
-/* =====================================
-   EXISTING SESSION
-===================================== */
+async function loadJobs(){
 
-skillBridgeSupabase
-  .auth
-  .getSession()
-  .then(
-    async function(result) {
-
-      if (result.data.session) {
-
-        currentUser =
-          result.data.session.user;
+  const list =
+    document.getElementById("jobsList");
 
 
-        await loadProfile();
+  list.innerHTML =
+    "Loading jobs...";
 
-      }
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("jobs")
+    .select("*")
+    .eq("status","open")
+    .order("created_at",{
+      ascending:false
+    });
 
 
-      updateNavigation();
+  if(error){
+
+    console.error(error);
+
+    list.innerHTML =
+      `<div class="message error">
+        ${safe(error.message)}
+      </div>`;
+
+    return;
+  }
+
+
+  jobs = data || [];
+
+
+  if(jobs.length === 0){
+
+    list.innerHTML =
+      `<div class="card">
+        <h3>No jobs yet</h3>
+        <p>
+          Be the first client to post a job on SkillBridge.
+        </p>
+      </div>`;
+
+    return;
+  }
+
+
+  list.innerHTML = jobs.map((job,index) => {
+
+    return `
+      <div class="card job">
+
+        <h3>${safe(job.title)}</h3>
+
+        <p>
+          <span class="badge">
+            ${safe(job.category)}
+          </span>
+
+          <span class="badge">
+            ${safe(job.currency || "NGN")}
+            ${safe(job.budget)}
+          </span>
+        </p>
+
+        <p>
+          ${safe(job.description)}
+        </p>
+
+        <p class="small">
+          Posted:
+          ${job.created_at
+            ? new Date(job.created_at)
+                .toLocaleString()
+            : "Recently"}
+        </p>
+
+        <button class="btn"
+                onclick="openApply(${index})">
+          Apply
+        </button>
+
+      </div>
+    `;
+
+  }).join("");
+}
+
+
+/* =====================================================
+   OPEN APPLY
+   ===================================================== */
+
+async function openApply(index){
+
+  if(!currentUser){
+
+    showPage("login");
+
+    return;
+  }
+
+
+  await loadCurrentProfile();
+
+
+  if(!currentProfile){
+
+    alert("Please complete your profile first.");
+
+    return;
+  }
+
+
+  if(currentProfile.account_type !== "worker"){
+
+    alert(
+      "Only Job Seekers can apply for jobs."
+    );
+
+    return;
+  }
+
+
+  selectedJob = jobs[index];
+
+
+  if(!selectedJob){
+
+    return;
+  }
+
+
+  document.getElementById("selectedJob")
+    .innerHTML = `
+
+      <div class="card">
+
+        <h3>${safe(selectedJob.title)}</h3>
+
+        <p>
+          <strong>Category:</strong>
+          ${safe(selectedJob.category)}
+        </p>
+
+        <p>
+          <strong>Budget:</strong>
+          ${safe(selectedJob.currency || "NGN")}
+          ${safe(selectedJob.budget)}
+        </p>
+
+        <p>
+          ${safe(selectedJob.description)}
+        </p>
+
+      </div>
+
+  `;
+
+
+  document.getElementById("proposal")
+    .value = "";
+
+
+  document.getElementById("applyMessage")
+    .innerHTML = "";
+
+
+  showPage("apply");
+}
+
+
+/* =====================================================
+   SUBMIT APPLICATION
+   ===================================================== */
+
+async function submitApplication(){
+
+  if(!currentUser){
+
+    showPage("login");
+
+    return;
+  }
+
+
+  if(!selectedJob){
+
+    message(
+      "applyMessage",
+      "No job selected.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const proposal =
+    document.getElementById("proposal")
+      .value.trim();
+
+
+  if(!proposal){
+
+    message(
+      "applyMessage",
+      "Please write your proposal.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const profile =
+    await loadCurrentProfile();
+
+
+  if(!profile ||
+     profile.account_type !== "worker"){
+
+    message(
+      "applyMessage",
+      "Only Job Seekers can apply.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("applications")
+    .insert({
+
+      job_id:selectedJob.id,
+
+      worker_id:currentUser.id,
+
+      proposal:proposal,
+
+      status:"pending"
+
+    })
+    .select()
+    .single();
+
+
+  if(error){
+
+    console.error(error);
+
+
+    if(
+      error.message &&
+      error.message.toLowerCase()
+        .includes("duplicate")
+    ){
+
+      message(
+        "applyMessage",
+        "You have already applied for this job.",
+        "error"
+      );
+
+    }else{
+
+      message(
+        "applyMessage",
+        error.message,
+        "error"
+      );
 
     }
+
+    return;
+  }
+
+
+  message(
+    "applyMessage",
+    "✅ Application submitted successfully."
   );
 
 
+  setTimeout(() => {
 
-/* =====================================
-   AUTH STATE LISTENER
-===================================== */
+    showPage("jobs");
 
-skillBridgeSupabase
-  .auth
-  .onAuthStateChange(
-    function(event, session) {
-
-      if (session) {
-
-        currentUser =
-          session.user;
-
-      } else {
-
-        currentUser = null;
-
-      }
+  },1000);
+}
 
 
-      updateNavigation();
+/* =====================================================
+   AUTH LISTENER
+   ===================================================== */
 
-    }
-  );
+supabaseClient.auth.onAuthStateChange(
+  async (event,session) => {
+
+    currentUser =
+      session
+        ? session.user
+        : null;
+
+    await refreshUI();
+
+  }
+);
 
 
+/* =====================================================
+   START APP
+   ===================================================== */
 
-/* =====================================
-   INITIAL STATE
-===================================== */
+loadSession();
 
-updateNavigation();
+showPage("home");
 
 </script>
 
