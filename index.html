@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<!-- Supabase JavaScript Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <title>SkillBridge | Work. Skills. Trust.</title>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -64,7 +69,7 @@ textarea {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .hero {
@@ -101,85 +106,202 @@ main {
   border-left: 5px solid #1d604b;
 }
 
-.warning {
-  background: #fff8dc;
-  padding: 12px;
-  border-radius: 7px;
-  margin-top: 10px;
-}
-
 footer {
   text-align: center;
   padding: 25px 15px;
   color: #666;
 }
+
+.profile-skill {
+  display: inline-block;
+  background: #e6f2ed;
+  color: #1d604b;
+  padding: 7px 11px;
+  border-radius: 20px;
+  margin: 4px;
+  font-size: 13px;
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<header>
-  <h1>SkillBridge</h1>
-  <p>Work. Skills. Trust. Anywhere.</p>
 
-  <nav>
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('jobs')">Find Jobs</button>
-    <button onclick="showPage('post')">Post Job</button>
-    <button onclick="showPage('login')">Login</button>
-    <button onclick="showPage('register')">Register</button>
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+  <h1>SkillBridge</h1>
+
+  <p>
+    Work. Skills. Trust. Anywhere.
+  </p>
+
+
+  <nav id="mainNav">
+
+    <button onclick="showPage('home')">
+      Home
+    </button>
+
+    <button onclick="showPage('jobs')">
+      Find Jobs
+    </button>
+
+    <button onclick="showPage('post')">
+      Post Job
+    </button>
+
+
+    <!-- GUEST MENU -->
+
+    <span id="guestNav">
+
+      <button onclick="showPage('login')">
+        Login
+      </button>
+
+      <button onclick="showPage('register')">
+        Register
+      </button>
+
+    </span>
+
+
+    <!-- LOGGED-IN MENU -->
+
+    <span id="userNav" class="hidden">
+
+      <button onclick="openDashboard()">
+        Dashboard
+      </button>
+
+      <button onclick="logout()">
+        Logout
+      </button>
+
+    </span>
+
   </nav>
+
 </header>
 
-<section class="hero">
-  <h2>Your Skills. Your Opportunity.</h2>
-  <p>Connect with people who need your skills.</p>
 
-  <button onclick="showPage('jobs')">Find Jobs</button>
-  <button onclick="showPage('post')">Post a Job</button>
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+  <h2>
+    Your Skills. Your Opportunity.
+  </h2>
+
+  <p>
+    Connect with people who need your skills.
+  </p>
+
+  <button onclick="showPage('jobs')">
+    Find Jobs
+  </button>
+
+  <button onclick="showPage('post')">
+    Post a Job
+  </button>
+
 </section>
 
+
+
 <main>
+
+
+<!-- =========================
+     HOME
+========================= -->
 
 <section id="home">
 
   <div class="card">
-    <h2>Welcome to SkillBridge 🌍</h2>
+
+    <h2>
+      Welcome to SkillBridge 🌍
+    </h2>
 
     <p>
-      SkillBridge is designed to connect skilled people with clients
-      around the world through honest and lawful work.
+      SkillBridge is designed to connect skilled people
+      with clients around the world through honest and
+      lawful work.
     </p>
 
-    <h3>Popular Skills</h3>
 
-    <span class="badge">Graphic Design</span>
-    <span class="badge">Writing</span>
-    <span class="badge">Translation</span>
-    <span class="badge">Video Editing</span>
-    <span class="badge">Social Media</span>
-    <span class="badge">Virtual Assistance</span>
+    <h3>
+      Popular Skills
+    </h3>
+
+    <span class="badge">
+      Graphic Design
+    </span>
+
+    <span class="badge">
+      Writing
+    </span>
+
+    <span class="badge">
+      Translation
+    </span>
+
+    <span class="badge">
+      Video Editing
+    </span>
+
+    <span class="badge">
+      Social Media
+    </span>
+
+    <span class="badge">
+      Virtual Assistance
+    </span>
+
   </div>
 
+
   <div class="card safe">
-    <h2>🛡️ SkillBridge Safety</h2>
+
+    <h2>
+      🛡️ SkillBridge Safety
+    </h2>
 
     <p>
-      We aim to build a trusted marketplace where users can
-      identify suspicious activity and report scams.
+      We aim to build a trusted marketplace where users
+      can identify suspicious activity and report scams.
     </p>
 
     <button onclick="showPage('safety')">
       Safety Center
     </button>
+
   </div>
 
 </section>
 
 
+
+<!-- =========================
+     JOBS
+========================= -->
+
 <section id="jobs" class="hidden">
 
-  <h2>Available Jobs</h2>
+  <h2>
+    Available Jobs
+  </h2>
 
   <div id="jobList"></div>
 
@@ -190,15 +312,24 @@ footer {
 </section>
 
 
+
+<!-- =========================
+     POST JOB
+========================= -->
+
 <section id="post" class="hidden">
 
   <div class="card">
 
-    <h2>📢 Post a Job</h2>
+    <h2>
+      📢 Post a Job
+    </h2>
 
     <form id="jobForm">
 
-      <label>Job Title</label>
+      <label>
+        Job Title
+      </label>
 
       <input
         id="title"
@@ -206,25 +337,54 @@ footer {
         placeholder="Example: Design a business logo"
       >
 
-      <label>Category</label>
 
-      <select id="category" required>
+      <label>
+        Category
+      </label>
+
+      <select
+        id="category"
+        required
+      >
 
         <option value="">
           Choose a skill
         </option>
 
-        <option>Graphic Design</option>
-        <option>Video Editing</option>
-        <option>Writing & Translation</option>
-        <option>Social Media</option>
-        <option>Virtual Assistant</option>
-        <option>Programming</option>
-        <option>Other lawful work</option>
+        <option>
+          Graphic Design
+        </option>
+
+        <option>
+          Video Editing
+        </option>
+
+        <option>
+          Writing & Translation
+        </option>
+
+        <option>
+          Social Media
+        </option>
+
+        <option>
+          Virtual Assistant
+        </option>
+
+        <option>
+          Programming
+        </option>
+
+        <option>
+          Other lawful work
+        </option>
 
       </select>
 
-      <label>Budget in Naira</label>
+
+      <label>
+        Budget in Naira
+      </label>
 
       <input
         id="budget"
@@ -234,13 +394,17 @@ footer {
         placeholder="Example: 20000"
       >
 
-      <label>Job Description</label>
+
+      <label>
+        Job Description
+      </label>
 
       <textarea
         id="description"
         required
         placeholder="Describe the work..."
       ></textarea>
+
 
       <button type="submit">
         Publish Job
@@ -253,21 +417,37 @@ footer {
 </section>
 
 
+
+<!-- =========================
+     APPLY
+========================= -->
+
 <section id="apply" class="hidden">
 
   <div class="card">
 
-    <h2>📝 Apply for Job</h2>
+    <h2>
+      📝 Apply for Job
+    </h2>
 
     <p id="selectedJob"></p>
 
+
     <form id="applyForm">
 
-      <label>Your Name</label>
+      <label>
+        Your Name
+      </label>
 
-      <input id="workerName" required>
+      <input
+        id="workerName"
+        required
+      >
 
-      <label>Your Main Skill</label>
+
+      <label>
+        Your Main Skill
+      </label>
 
       <input
         id="workerSkill"
@@ -275,7 +455,10 @@ footer {
         placeholder="Example: Graphic Design"
       >
 
-      <label>Your Proposal</label>
+
+      <label>
+        Your Proposal
+      </label>
 
       <textarea
         id="proposal"
@@ -283,11 +466,13 @@ footer {
         placeholder="Explain why you are suitable for this job..."
       ></textarea>
 
+
       <button type="submit">
         Submit Application
       </button>
 
     </form>
+
 
     <p id="applyMessage"></p>
 
@@ -296,19 +481,29 @@ footer {
 </section>
 
 
+
+<!-- =========================
+     LOGIN
+========================= -->
+
 <section id="login" class="hidden">
 
   <div class="card">
 
-    <h2>🔐 Login</h2>
+    <h2>
+      🔐 Login
+    </h2>
 
     <p>
       Login to access your SkillBridge account.
     </p>
 
+
     <form id="loginForm">
 
-      <label>Email</label>
+      <label>
+        Email
+      </label>
 
       <input
         id="loginEmail"
@@ -317,7 +512,10 @@ footer {
         placeholder="you@example.com"
       >
 
-      <label>Password</label>
+
+      <label>
+        Password
+      </label>
 
       <input
         id="loginPassword"
@@ -326,11 +524,13 @@ footer {
         placeholder="Your password"
       >
 
+
       <button type="submit">
         Login
       </button>
 
     </form>
+
 
     <p id="loginMessage"></p>
 
@@ -339,15 +539,25 @@ footer {
 </section>
 
 
+
+<!-- =========================
+     REGISTER
+========================= -->
+
 <section id="register" class="hidden">
 
   <div class="card">
 
-    <h2>👤 Create Account</h2>
+    <h2>
+      👤 Create Account
+    </h2>
+
 
     <form id="registerForm">
 
-      <label>Full Name</label>
+      <label>
+        Full Name
+      </label>
 
       <input
         id="registerName"
@@ -355,7 +565,10 @@ footer {
         placeholder="Your full name"
       >
 
-      <label>Email</label>
+
+      <label>
+        Email
+      </label>
 
       <input
         id="registerEmail"
@@ -364,9 +577,15 @@ footer {
         placeholder="you@example.com"
       >
 
-      <label>I want to...</label>
 
-      <select id="userType" required>
+      <label>
+        I want to...
+      </label>
+
+      <select
+        id="userType"
+        required
+      >
 
         <option value="">
           Choose one
@@ -382,7 +601,10 @@ footer {
 
       </select>
 
-      <label>Password</label>
+
+      <label>
+        Password
+      </label>
 
       <input
         id="registerPassword"
@@ -392,11 +614,13 @@ footer {
         placeholder="At least 8 characters"
       >
 
+
       <button type="submit">
         Create Account
       </button>
 
     </form>
+
 
     <p id="registerMessage"></p>
 
@@ -405,43 +629,96 @@ footer {
 </section>
 
 
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
 <section id="dashboard" class="hidden">
 
   <div class="card">
 
-    <h2>👤 My Dashboard</h2>
+    <h2>
+      👤 My Dashboard
+    </h2>
+
 
     <p id="welcomeUser"></p>
 
-    <h3>My SkillBridge Profile</h3>
+
+    <h3>
+      My SkillBridge Profile
+    </h3>
+
 
     <p>
-      <strong>Account Type:</strong>
+      <strong>
+        Account Type:
+      </strong>
+
       <span id="accountType"></span>
     </p>
 
+
     <p>
-      <strong>Trust Score:</strong>
+      <strong>
+        Country:
+      </strong>
+
+      <span id="profileCountryDisplay">
+        Not added
+      </span>
+    </p>
+
+
+    <p>
+      <strong>
+        Skills:
+      </strong>
+    </p>
+
+
+    <div id="profileSkillsDisplay">
+      <span class="badge">
+        No skills added
+      </span>
+    </div>
+
+
+    <p>
+      <strong>
+        Trust Score:
+      </strong>
+
       New Account
     </p>
 
-    <span class="badge">
-      Account Created
-    </span>
 
-    <span class="badge">
+    <span
+      id="profileStatus"
+      class="badge"
+    >
       Profile Incomplete
     </span>
 
+
     <br><br>
+
+
+    <button onclick="showPage('profile')">
+      ✏️ Edit Profile
+    </button>
+
 
     <button onclick="showPage('jobs')">
       Find Jobs
     </button>
 
+
     <button onclick="showPage('post')">
       Post Job
     </button>
+
 
     <button onclick="logout()">
       Logout
@@ -452,32 +729,138 @@ footer {
 </section>
 
 
+
+<!-- =========================
+     PROFILE
+========================= -->
+
+<section id="profile" class="hidden">
+
+  <div class="card">
+
+    <h2>
+      ✏️ Edit My Profile
+    </h2>
+
+
+    <form id="profileForm">
+
+      <label>
+        Full Name
+      </label>
+
+      <input
+        id="profileName"
+        required
+        placeholder="Your full name"
+      >
+
+
+      <label>
+        Country
+      </label>
+
+      <input
+        id="profileCountry"
+        required
+        placeholder="Your country"
+      >
+
+
+      <label>
+        Your Skills
+      </label>
+
+      <input
+        id="profileSkills"
+        required
+        placeholder="Example: Mathematics, Data Entry, Graphic Design"
+      >
+
+
+      <p>
+        Separate multiple skills with commas.
+      </p>
+
+
+      <button type="submit">
+        💾 Save Profile
+      </button>
+
+    </form>
+
+
+    <p id="profileMessage"></p>
+
+
+    <button onclick="openDashboard()">
+      ← Back to Dashboard
+    </button>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================
+     SAFETY
+========================= -->
+
 <section id="safety" class="hidden">
 
   <div class="card safe">
 
-    <h2>🛡️ Safety Center</h2>
+    <h2>
+      🛡️ Safety Center
+    </h2>
 
-    <h3>Protect Yourself</h3>
+
+    <h3>
+      Protect Yourself
+    </h3>
+
 
     <ul>
-      <li>Do not share your password.</li>
-      <li>Never share OTP codes.</li>
-      <li>Be careful with suspicious payment requests.</li>
-      <li>Do not accept fake jobs or illegal work.</li>
-      <li>Report suspicious users.</li>
+
+      <li>
+        Do not share your password.
+      </li>
+
+      <li>
+        Never share OTP codes.
+      </li>
+
+      <li>
+        Be careful with suspicious payment requests.
+      </li>
+
+      <li>
+        Do not accept fake jobs or illegal work.
+      </li>
+
+      <li>
+        Report suspicious users.
+      </li>
+
     </ul>
 
-    <h3>🚨 Report Suspicious Activity</h3>
+
+    <h3>
+      🚨 Report Suspicious Activity
+    </h3>
+
 
     <textarea
       id="reportText"
       placeholder="Describe the suspicious activity..."
     ></textarea>
 
+
     <button onclick="submitReport()">
       Submit Test Report
     </button>
+
 
     <p id="reportMessage"></p>
 
@@ -485,8 +868,14 @@ footer {
 
 </section>
 
+
 </main>
 
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
@@ -499,13 +888,38 @@ footer {
   </p>
 
   <p>
-    Supabase connection prepared. Real database features are being added.
+    Secure authentication powered by Supabase.
   </p>
 
 </footer>
 
 
+
 <script>
+
+/* =====================================
+   SUPABASE CONNECTION
+===================================== */
+
+const SUPABASE_URL =
+  'https://vajdpwsafqbdpnegmfvr.supabase.co';
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  'sb_publishable_m4t60b903KsPTg5hsBKwNQ_9w5h5DQA';
+
+
+const skillBridgeSupabase =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+
+/* =====================================
+   GLOBAL VARIABLES
+===================================== */
 
 let jobs = [];
 
@@ -514,7 +928,10 @@ let selected = null;
 let currentUser = null;
 
 
-/* PAGE NAVIGATION */
+
+/* =====================================
+   PAGE NAVIGATION
+===================================== */
 
 function showPage(page) {
 
@@ -526,49 +943,109 @@ function showPage(page) {
     'login',
     'register',
     'dashboard',
+    'profile',
     'safety'
   ];
 
+
   pages.forEach(function(id) {
 
-    document
-      .getElementById(id)
-      .classList
-      .add('hidden');
+    const element =
+      document.getElementById(id);
+
+    if (element) {
+      element.classList.add('hidden');
+    }
 
   });
 
-  document
-    .getElementById(page)
-    .classList
-    .remove('hidden');
+
+  const selectedPage =
+    document.getElementById(page);
+
+
+  if (selectedPage) {
+    selectedPage.classList.remove('hidden');
+  }
+
 
   if (page === 'jobs') {
     renderJobs();
   }
 
-  window.scrollTo(0,0);
+
+  if (page === 'profile') {
+    fillProfileForm();
+  }
+
+
+  window.scrollTo(0, 0);
 }
 
 
-/* SAFE TEXT */
+
+/* =====================================
+   NAVIGATION STATE
+===================================== */
+
+function updateNavigation() {
+
+  const guestNav =
+    document.getElementById('guestNav');
+
+  const userNav =
+    document.getElementById('userNav');
+
+
+  if (!guestNav || !userNav) {
+    return;
+  }
+
+
+  if (currentUser) {
+
+    guestNav.classList.add('hidden');
+
+    userNav.classList.remove('hidden');
+
+  } else {
+
+    guestNav.classList.remove('hidden');
+
+    userNav.classList.add('hidden');
+
+  }
+
+}
+
+
+
+/* =====================================
+   SAFE TEXT
+===================================== */
 
 function safe(text) {
 
-  const el = document.createElement('span');
+  const el =
+    document.createElement('span');
 
   el.textContent = text;
 
   return el.innerHTML;
+
 }
 
 
-/* JOB LIST */
+
+/* =====================================
+   JOB LIST
+===================================== */
 
 function renderJobs() {
 
   const list =
     document.getElementById('jobList');
+
 
   if (jobs.length === 0) {
 
@@ -582,7 +1059,9 @@ function renderJobs() {
     return;
   }
 
+
   list.innerHTML = '';
+
 
   jobs.forEach(function(job, i) {
 
@@ -590,10 +1069,15 @@ function renderJobs() {
 
       <div class="card">
 
-        <h3>${safe(job.title)}</h3>
+        <h3>
+          ${safe(job.title)}
+        </h3>
 
         <p>
-          <strong>Category:</strong>
+          <strong>
+            Category:
+          </strong>
+
           ${safe(job.category)}
         </p>
 
@@ -618,48 +1102,71 @@ function renderJobs() {
 }
 
 
-/* POST JOB */
+
+/* =====================================
+   POST JOB
+===================================== */
 
 document
   .getElementById('jobForm')
-  .addEventListener('submit', function(e) {
+  .addEventListener(
+    'submit',
+    function(e) {
 
-    e.preventDefault();
-
-    jobs.push({
-
-      title:
-        document.getElementById('title').value,
-
-      category:
-        document.getElementById('category').value,
-
-      budget:
-        Number(
-          document.getElementById('budget').value
-        ),
-
-      description:
-        document.getElementById('description').value
-
-    });
-
-    this.reset();
-
-    alert(
-      'Job added to this prototype.'
-    );
-
-    showPage('jobs');
-
-  });
+      e.preventDefault();
 
 
-/* APPLY */
+      jobs.push({
+
+        title:
+          document.getElementById(
+            'title'
+          ).value,
+
+        category:
+          document.getElementById(
+            'category'
+          ).value,
+
+        budget:
+          Number(
+            document.getElementById(
+              'budget'
+            ).value
+          ),
+
+        description:
+          document.getElementById(
+            'description'
+          ).value
+
+      });
+
+
+      this.reset();
+
+
+      alert(
+        'Job added to this prototype.'
+      );
+
+
+      showPage('jobs');
+
+    }
+  );
+
+
+
+/* =====================================
+   APPLY
+===================================== */
 
 function openApply(index) {
 
-  selected = jobs[index];
+  selected =
+    jobs[index];
+
 
   document.getElementById(
     'selectedJob'
@@ -668,163 +1175,238 @@ function openApply(index) {
     ' — ₦' +
     selected.budget.toLocaleString();
 
+
   document.getElementById(
     'applyMessage'
   ).textContent = '';
+
 
   showPage('apply');
 
 }
 
 
+
 document
   .getElementById('applyForm')
-  .addEventListener('submit', function(e) {
+  .addEventListener(
+    'submit',
+    function(e) {
 
-    e.preventDefault();
-
-    document.getElementById(
-      'applyMessage'
-    ).textContent =
-      'Application recorded in this prototype. It has not been sent to a real client yet.';
-
-    this.reset();
-
-  });
+      e.preventDefault();
 
 
-/* REGISTER */
-
-document
-  .getElementById('registerForm')
-  .addEventListener('submit', async function(e) {
-
-    e.preventDefault();
-
-    const name =
       document.getElementById(
-        'registerName'
-      ).value.trim();
+        'applyMessage'
+      ).textContent =
+        'Application recorded in this prototype. It has not been sent to a real client yet.';
 
-    const email =
-      document.getElementById(
-        'registerEmail'
-      ).value.trim();
-
-    const password =
-      document.getElementById(
-        'registerPassword'
-      ).value;
-
-    const type =
-      document.getElementById(
-        'userType'
-      ).value;
-
-    const message =
-      document.getElementById(
-        'registerMessage'
-      );
-
-    message.textContent =
-      'Creating your SkillBridge account...';
-
-    try {
-
-      const { data, error } =
-        await skillBridgeSupabase.auth.signUp({
-          email: email,
-          password: password,
-          options: {
-            data: {
-              full_name: name,
-              account_type: type
-            }
-          }
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      message.textContent =
-        'Account created. Check your email to confirm your account.';
 
       this.reset();
 
-    } catch (error) {
+    }
+  );
+
+
+
+/* =====================================
+   REGISTER
+===================================== */
+
+document
+  .getElementById('registerForm')
+  .addEventListener(
+    'submit',
+    async function(e) {
+
+      e.preventDefault();
+
+
+      const name =
+        document.getElementById(
+          'registerName'
+        ).value.trim();
+
+
+      const email =
+        document.getElementById(
+          'registerEmail'
+        ).value.trim();
+
+
+      const password =
+        document.getElementById(
+          'registerPassword'
+        ).value;
+
+
+      const type =
+        document.getElementById(
+          'userType'
+        ).value;
+
+
+      const message =
+        document.getElementById(
+          'registerMessage'
+        );
+
 
       message.textContent =
-        'Registration error: ' + error.message;
+        'Creating your SkillBridge account...';
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await skillBridgeSupabase
+            .auth
+            .signUp({
+
+              email: email,
+
+              password: password,
+
+              options: {
+
+                data: {
+
+                  full_name: name,
+
+                  account_type: type
+
+                }
+
+              }
+
+            });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        message.textContent =
+          'Account created. Check your email to confirm your account.';
+
+
+        this.reset();
+
+
+      } catch (error) {
+
+        message.textContent =
+          'Registration error: ' +
+          error.message;
+
+      }
 
     }
+  );
 
-  });
 
 
-/* LOGIN */
+/* =====================================
+   LOGIN
+===================================== */
 
 document
   .getElementById('loginForm')
-  .addEventListener('submit', async function(e) {
+  .addEventListener(
+    'submit',
+    async function(e) {
 
-    e.preventDefault();
+      e.preventDefault();
 
-    const email =
-      document.getElementById(
-        'loginEmail'
-      ).value.trim();
 
-    const password =
-      document.getElementById(
-        'loginPassword'
-      ).value;
+      const email =
+        document.getElementById(
+          'loginEmail'
+        ).value.trim();
 
-    const message =
-      document.getElementById(
-        'loginMessage'
-      );
 
-    message.textContent =
-      'Logging in...';
+      const password =
+        document.getElementById(
+          'loginPassword'
+        ).value;
 
-    try {
 
-      const { data, error } =
-        await skillBridgeSupabase.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
+      const message =
+        document.getElementById(
+          'loginMessage'
+        );
 
-      if (error) {
-        throw error;
+
+      message.textContent =
+        'Logging in...';
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await skillBridgeSupabase
+            .auth
+            .signInWithPassword({
+
+              email: email,
+
+              password: password
+
+            });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        currentUser =
+          data.user;
+
+
+        await loadProfile();
+
+
+        updateNavigation();
+
+
+        message.textContent =
+          'Login successful.';
+
+
+        setTimeout(
+          function() {
+
+            openDashboard();
+
+          },
+          400
+        );
+
+
+      } catch (error) {
+
+        message.textContent =
+          'Login error: ' +
+          error.message;
+
       }
 
-      currentUser =
-        data.user;
-
-      await loadProfile();
-
-      message.textContent =
-        'Login successful.';
-
-      setTimeout(function() {
-
-        openDashboard();
-
-      }, 500);
-
-    } catch (error) {
-
-      message.textContent =
-        'Login error: ' + error.message;
-
     }
+  );
 
-  });
 
 
-/* LOAD PROFILE */
+/* =====================================
+   LOAD PROFILE
+===================================== */
 
 async function loadProfile() {
 
@@ -832,12 +1414,22 @@ async function loadProfile() {
     return;
   }
 
-  const { data, error } =
+
+  const {
+    data,
+    error
+  } =
     await skillBridgeSupabase
       .from('profiles')
-      .select('full_name, account_type')
-      .eq('id', currentUser.id)
+      .select(
+        'full_name, account_type, country, skills'
+      )
+      .eq(
+        'id',
+        currentUser.id
+      )
       .single();
+
 
   if (error) {
 
@@ -849,151 +1441,41 @@ async function loadProfile() {
     return;
   }
 
+
   currentUser.profile =
     data;
+
+
+  updateDashboardProfile();
 
 }
 
 
-/* DASHBOARD */
 
-async function openDashboard() {
+/* =====================================
+   UPDATE DASHBOARD PROFILE
+===================================== */
 
-  const {
-    data: {
-      user
-    }
-  } =
-    await skillBridgeSupabase.auth.getUser();
+function updateDashboardProfile() {
 
-  if (!user) {
-
-    showPage('login');
-
+  if (!currentUser) {
     return;
-
   }
 
-  currentUser =
-    user;
 
-  await loadProfile();
+  const profile =
+    currentUser.profile;
+
+
+  if (!profile) {
+    return;
+  }
+
 
   document.getElementById(
     'welcomeUser'
   ).textContent =
     'Welcome, ' +
     (
-      currentUser.profile?.full_name ||
-      currentUser.email
-    ) +
-    '!';
-
-  document.getElementById(
-    'accountType'
-  ).textContent =
-    currentUser.profile?.account_type === 'worker'
-      ? 'Job Seeker'
-      : 'Client / Employer';
-
-  showPage('dashboard');
-
-}
-
-
-/* LOGOUT */
-
-async function logout() {
-
-  const { error } =
-    await skillBridgeSupabase.auth.signOut();
-
-  if (error) {
-
-    alert(
-      'Logout error: ' +
-      error.message
-    );
-
-    return;
-
-  }
-
-  currentUser = null;
-
-  showPage('home');
-
-}
-
-
-/* REPORT */
-
-function submitReport() {
-
-  const text =
-    document.getElementById(
-      'reportText'
-    ).value.trim();
-
-  if (!text) {
-
-    alert(
-      'Please describe the suspicious activity first.'
-    );
-
-    return;
-
-  }
-
-  document.getElementById(
-    'reportMessage'
-  ).textContent =
-    'Test report submitted. Secure database reporting will be connected next.';
-
-  document.getElementById(
-    'reportText'
-  ).value = '';
-
-}
-
-
-/* SUPABASE CONNECTION */
-
-const SUPABASE_URL =
-  'https://vajdpwsafqbdpnegmfvr.supabase.co';
-
-const SUPABASE_PUBLISHABLE_KEY =
-  'sb_publishable_m4t60b903KsPTg5hsBKwNQ_9w5h5DQA';
-
-const skillBridgeSupabase =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
-
-console.log(
-  'SkillBridge Supabase connection is ready.'
-);
-
-
-/* CHECK EXISTING LOGIN */
-
-skillBridgeSupabase.auth
-  .getSession()
-  .then(async function(result) {
-
-    if (result.data.session) {
-
-      currentUser =
-        result.data.session.user;
-
-      await loadProfile();
-
-    }
-
-  });
-
-</script>
-
-</body>
-  </html>
+      profile.full_name ||
+      cu
