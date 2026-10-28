@@ -1922,12 +1922,12 @@ async function loadApplicants(jobId){
         </p>
 
         <button class="btn"
-          onclick="updateApplicationStatus('${application.id}','accepted')">
+          onclick="updateApplicationStatus('${application.id}','${jobId}','accepted')">
           Accept
         </button>
 
         <button class="btn secondary"
-          onclick="updateApplicationStatus('${application.id}','rejected')">
+          onclick="updateApplicationStatus('${application.id}','${jobId}','rejected')">
           Reject
         </button>
 
@@ -1942,23 +1942,61 @@ async function loadApplicants(jobId){
 /* =========================
    ACCEPT / REJECT APPLICATION
 ========================= */
+/* =========================
+   ACCEPT / REJECT APPLICATION
+========================= */
 
-async function updateApplicationStatus(applicationId,status){
+async function updateApplicationStatus(applicationId, jobId, status){
 
-  const { error } =
+  /* =========================
+     UPDATE APPLICATION
+  ========================= */
+
+  const { error: applicationError } =
     await supabaseClient
       .from("applications")
-      .update({ status: status })
+      .update({
+        status: status
+      })
       .eq("id", applicationId);
 
-  if(error){
+  if(applicationError){
 
     alert("Unable to update application.");
 
-    console.error(error);
+    console.error(applicationError);
 
     return;
   }
+
+
+  /* =========================
+     IF ACCEPTED
+     MARK JOB AS ASSIGNED
+  ========================= */
+
+  if(status === "accepted"){
+
+    const { error: jobError } =
+      await supabaseClient
+        .from("jobs")
+        .update({
+          status: "assigned"
+        })
+        .eq("id", jobId);
+
+    if(jobError){
+
+      console.error("Job status update error:", jobError);
+
+    }
+
+  }
+
+
+  /* =========================
+     MESSAGE
+  ========================= */
 
   alert(
     status === "accepted"
@@ -1966,11 +2004,26 @@ async function updateApplicationStatus(applicationId,status){
       : "Applicant rejected."
   );
 
+
+  /* =========================
+     RELOAD APPLICANTS
+  ========================= */
+
+  await loadApplicants(jobId);
+
+
+  /* =========================
+     REFRESH DASHBOARD
+  ========================= */
+
   if(typeof refreshUI === "function"){
+
     await refreshUI();
+
   }
 
   }
+
 /* =====================================================
    START APP
    ===================================================== */
