@@ -1738,18 +1738,22 @@ async function submitApplication(){
    ===================================================== */
 
 supabaseClient.auth.onAuthStateChange(
-  async (event,session) => {
+  (event, session) => {
 
     currentUser =
       session
         ? session.user
         : null;
 
-    await refreshUI();
+    setTimeout(async () => {
+      await refreshUI();
 
-await loadClientJobs();
+      if (currentUser) {
+        await loadClientJobs();
+      }
+    }, 0);
 
-}
+  }
 );
 
 /* =========================
