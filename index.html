@@ -1750,7 +1750,221 @@ supabaseClient.auth.onAuthStateChange(
   }
 );
 
+/* =========================
+   CLIENT MY JOBS & APPLICANTS
+========================= */
 
+async function loadClientJobs(){
+
+  const section = document.getElementById("clientJobsSection");
+  const list = document.getElementById("clientJobsList");
+
+  if(!section || !list || !currentUser) return;
+
+  const { data: profile, error: profileError } =
+    await supabaseClient
+      .from("profiles")
+      .select("account_type")
+      .eq("id", currentUser.id)
+      .single();
+
+  if(profileError || !profile){
+    section.classList.add("hidden");
+    return;
+  }
+
+  if(profile.account_type !== "client"){
+    section.classList.add("hidden");
+    return;
+  }
+
+  section.classList.remove("hidden");
+
+  list.innerHTML = "<p>Loading your jobs...</p>";
+
+  const { data: jobs, error } =
+    await supabaseClient
+      .from("jobs")
+      .select("*")
+      .eq("client_id", currentUser.id)
+      .order("created_at", { ascending:false });
+
+  if(error){
+    list.innerHTML =
+      "<p>Unable to load your jobs.</p>";
+    console.error(error);
+    return;
+  }
+
+  if(!jobs || jobs.length === 0){
+    list.innerHTML =
+      "<p>You have not posted any jobs yet.</p>";
+    return;
+  }
+
+  list.innerHTML = jobs.map(job => `
+    <div class="card">
+
+      <h3>${safe(job.title)}</h3>
+
+      <p>
+        <strong>Category:</strong>
+        ${safe(job.category || "Not set")}
+      </p>
+
+      <p>
+        <strong>Budget:</strong>
+        ${safe(job.currency || "NGN")}
+        ${safe(job.budget || "0")}
+      </p>
+
+      <p>
+        <strong>Status:</strong>
+        ${safe(job.status || "open")}
+      </p>
+
+      <button class="btn"
+        onclick="loadApplicants('${job.id}')">
+        View Applicants
+      </button>
+
+    </div>
+  `).join("");
+
+}
+
+
+/* =========================
+   LOAD APPLICANTS
+========================= */
+
+async function loadApplicants(jobId){
+
+  const section =
+    document.getElementById("applicantsSection");
+
+  const list =
+    document.getElementById("applicantsList");
+
+  if(!section || !list) return;
+
+  section.classList.remove("hidden");
+
+  list.innerHTML =
+    "<p>Loading applicants...</p>";
+
+  const { data: applications, error } =
+    await supabaseClient
+      .from("applications")
+      .select("*")
+      .eq("job_id", jobId)
+      .order("created_at", { ascending:false });
+
+  if(error){
+
+    list.innerHTML =
+      "<p>Unable to load applicants.</p>";
+
+    console.error(error);
+    return;
+  }
+
+  if(!applications || applications.length === 0){
+
+    list.innerHTML =
+      "<p>No applicants yet.</p>";
+
+    return;
+  }
+
+  let html = "";
+
+  for(const application of applications){
+
+    const { data: worker } =
+      await supabaseClient
+        .from("profiles")
+        .select("full_name, country, skills, trust_score")
+        .eq("id", application.worker_id)
+        .single();
+
+    html += `
+      <div class="card">
+
+        <h3>
+          ${safe(worker?.full_name || "Job Seeker")}
+        </h3>
+
+        <p>
+          <strong>Country:</strong>
+          ${safe(worker?.country || "Not set")}
+        </p>
+
+        <p>
+          <strong>Trust Score:</strong>
+          ${safe(worker?.trust_score ?? 0)}
+        </p>
+
+        <p>
+          <strong>Proposal:</strong><br>
+          ${safe(application.proposal || "No proposal")}
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          ${safe(application.status || "pending")}
+        </p>
+
+        <button class="btn"
+          onclick="updateApplicationStatus('${application.id}','accepted')">
+          Accept
+        </button>
+
+        <button class="btn secondary"
+          onclick="updateApplicationStatus('${application.id}','rejected')">
+          Reject
+        </button>
+
+      </div>
+    `;
+  }
+
+  list.innerHTML = html;
+}
+
+
+/* =========================
+   ACCEPT / REJECT APPLICATION
+========================= */
+
+async function updateApplicationStatus(applicationId,status){
+
+  const { error } =
+    await supabaseClient
+      .from("applications")
+      .update({ status: status })
+      .eq("id", applicationId);
+
+  if(error){
+
+    alert("Unable to update application.");
+
+    console.error(error);
+
+    return;
+  }
+
+  alert(
+    status === "accepted"
+      ? "Applicant accepted successfully."
+      : "Applicant rejected."
+  );
+
+  if(typeof refreshUI === "function"){
+    await refreshUI();
+  }
+
+  }
 /* =====================================================
    START APP
    ===================================================== */
