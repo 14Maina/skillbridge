@@ -1949,50 +1949,86 @@ async function updateApplicationStatus(applicationId, jobId, status){
      UPDATE APPLICATION
   ========================= */
 
-  const { error: applicationError } =
+  const { data: updatedApplication, error: applicationError } =
     await supabaseClient
       .from("applications")
       .update({
         status: status
       })
-      .eq("id", applicationId);
+      .eq("id", applicationId)
+      .select();
 
   if(applicationError){
 
-    alert("Unable to update application.");
+    alert("Application update failed.");
 
-    console.error(applicationError);
+    console.error("Application error:", applicationError);
+
+    return;
+  }
+
+  if(!updatedApplication || updatedApplication.length === 0){
+
+    alert(
+      "Application was not updated. Check your Supabase RLS policy."
+    );
+
+    console.error(
+      "No application row was updated."
+    );
 
     return;
   }
 
 
   /* =========================
-     IF ACCEPTED
-     MARK JOB AS ASSIGNED
+     ACCEPTED → ASSIGN JOB
   ========================= */
 
   if(status === "accepted"){
 
-    const { error: jobError } =
+    const { data: updatedJob, error: jobError } =
       await supabaseClient
         .from("jobs")
         .update({
           status: "assigned"
         })
-        .eq("id", jobId);
+        .eq("id", jobId)
+        .select();
 
     if(jobError){
 
-      console.error("Job status update error:", jobError);
+      alert(
+        "Applicant accepted, but job status could not be changed."
+      );
 
+      console.error("Job update error:", jobError);
+
+      await loadApplicants(jobId);
+
+      return;
+    }
+
+    if(!updatedJob || updatedJob.length === 0){
+
+      alert(
+        "Applicant accepted, but the job was not updated."
+      );
+
+      console.error(
+        "No job row was updated."
+      );
+
+      await loadApplicants(jobId);
+
+      return;
     }
 
   }
 
 
   /* =========================
-     MESSAGE
+     SUCCESS MESSAGE
   ========================= */
 
   alert(
