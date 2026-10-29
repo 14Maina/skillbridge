@@ -1744,7 +1744,64 @@ async function submitApplication(){
   },1000);
 }
 
+/* =========================
+   LOAD NOTIFICATIONS
+========================= */
 
+async function loadNotifications(){
+
+  const list =
+    document.getElementById("notificationsList");
+
+  if(!list || !currentUser) return;
+
+  list.innerHTML =
+    "<p>Loading notifications...</p>";
+
+  const { data, error } =
+    await supabaseClient
+      .from("notifications")
+      .select("*")
+      .eq("user_id", currentUser.id)
+      .order("created_at", { ascending:false });
+
+  if(error){
+
+    console.error("Notifications error:", error);
+
+    list.innerHTML =
+      "<p>Unable to load notifications.</p>";
+
+    return;
+  }
+
+  if(!data || data.length === 0){
+
+    list.innerHTML =
+      "<p>No notifications yet.</p>";
+
+    return;
+  }
+
+  list.innerHTML = data.map(notification => `
+    <div class="card" style="margin-top:10px;">
+
+      <h4>
+        🔔 ${safe(notification.title)}
+      </h4>
+
+      <p>
+        ${safe(notification.message)}
+      </p>
+
+      <small>
+        ${new Date(notification.created_at).toLocaleString()}
+      </small>
+
+    </div>
+  `).join("");
+
+  }
 /* =====================================================
    AUTH LISTENER
    ===================================================== */
