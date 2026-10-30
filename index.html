@@ -1786,7 +1786,11 @@ async function loadNotifications(){
   }
 
   list.innerHTML = data.map(notification => `
-    <div class="card" style="margin-top:10px;">
+  <div
+    class="card"
+    style="margin-top:10px; cursor:pointer;"
+    onclick="markNotificationAsRead('${notification.id}')"
+  >
 
       <h4>
         🔔 ${safe(notification.title)}
