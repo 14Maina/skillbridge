@@ -1071,11 +1071,19 @@ async function loadDashboard(){
 
 
   document.getElementById("dashTrust")
-    .textContent =
-    profile.trust_score === null ||
-    profile.trust_score === undefined
-      ? "New Account"
-      : profile.trust_score;
+  .textContent =
+  profile.trust_score === null ||
+  profile.trust_score === undefined
+    ? "New Account"
+    : profile.trust_score;
+
+
+document.getElementById("dashSkill")
+  .textContent =
+  profile.skill_score === null ||
+  profile.skill_score === undefined
+    ? 0
+    : profile.skill_score;
 
 
   const complete =
