@@ -401,33 +401,97 @@ footer{
 
     <div id="dashboardMessage"></div>
 
-    <div class="card">
+    <div class="dashboard-profile-card">
+
+  <div class="dashboard-profile-top">
+
+    <div class="dashboard-avatar">
+      👤
+    </div>
+
+    <div class="dashboard-user-info">
 
       <h3 id="welcomeName">
         Welcome!
       </h3>
 
       <p>
-        <strong>Account Type:</strong>
-        <span id="dashType"></span>
+        Your SkillBridge profile
       </p>
 
-      <p>
-        <strong>Country:</strong>
-        <span id="dashCountry"></span>
-      </p>
+    </div>
 
-      <p>
-        <strong>Skills:</strong>
-        <span id="dashSkills"></span>
-      </p>
+    <div
+      id="profileStatus"
+      class="dashboard-status"
+    >
+      Profile
+    </div>
 
-      <p>
-        <strong>Trust Score:</strong>
-        <span id="dashTrust"></span>
-      </p>
+  </div>
 
-      <p id="profileStatus"></p>
+
+  <div class="dashboard-info-grid">
+
+    <div class="dashboard-info-item">
+
+      <small>Account Type</small>
+
+      <strong id="dashType">
+        —
+      </strong>
+
+    </div>
+
+
+    <div class="dashboard-info-item">
+
+      <small>Country</small>
+
+      <strong id="dashCountry">
+        —
+      </strong>
+
+    </div>
+
+
+    <div class="dashboard-info-item">
+
+      <small>Skills</small>
+
+      <strong id="dashSkills">
+        —
+      </strong>
+
+    </div>
+
+
+    <div class="dashboard-info-item dashboard-trust">
+
+      <small>⭐ Trust Score</small>
+
+      <strong id="dashTrust">
+        0
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <div class="dashboard-actions">
+
+    <button onclick="showPage('profile')">
+      ✏️ Edit Profile
+    </button>
+
+    <button onclick="showPage('jobs')">
+      🔎 Find Jobs
+    </button>
+
+  </div>
+
+    </div>
 
 <!-- NOTIFICATIONS -->
 
