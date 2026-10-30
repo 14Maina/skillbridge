@@ -1760,6 +1760,9 @@ async function loadNotifications(){
 
   if(!list || !currentUser) return;
 
+  const countElement =
+    document.getElementById("unreadNotificationsCount");
+
   list.innerHTML =
     "<p>Loading notifications...</p>";
 
@@ -1782,18 +1785,36 @@ async function loadNotifications(){
 
   if(!data || data.length === 0){
 
+    if(countElement){
+      countElement.textContent = "";
+    }
+
     list.innerHTML =
       "<p>No notifications yet.</p>";
 
     return;
   }
 
+  const unreadCount =
+    data.filter(
+      notification => notification.is_read === false
+    ).length;
+
+  if(countElement){
+
+    countElement.textContent =
+      unreadCount > 0
+        ? `(${unreadCount})`
+        : "";
+
+  }
+
   list.innerHTML = data.map(notification => `
-  <div
-    class="card"
-    style="margin-top:10px; cursor:pointer;"
-    onclick="markNotificationAsRead('${notification.id}')"
-  >
+    <div
+      class="card"
+      style="margin-top:10px; cursor:pointer;"
+      onclick="markNotificationAsRead('${notification.id}')"
+    >
 
       <h4>
         🔔 ${safe(notification.title)}
@@ -1810,7 +1831,7 @@ async function loadNotifications(){
     </div>
   `).join("");
 
-  }
+        }
   
 /* =========================
    MARK NOTIFICATION AS READ
