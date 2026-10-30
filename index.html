@@ -397,160 +397,187 @@ footer{
 
   <div class="container">
 
-    <h2>Dashboard</h2>
+    <div class="dashboard-header">
+      <h2>Dashboard</h2>
+      <p>Manage your SkillBridge account and activity.</p>
+    </div>
 
     <div id="dashboardMessage"></div>
 
+
+    <!-- PROFILE SUMMARY -->
+
     <div class="dashboard-profile-card">
 
-  <div class="dashboard-profile-top">
+      <div class="dashboard-profile-top">
 
-    <div class="dashboard-avatar">
-      👤
+        <div class="dashboard-avatar">
+          👤
+        </div>
+
+        <div class="dashboard-user-info">
+
+          <h3 id="welcomeName">
+            Welcome!
+          </h3>
+
+          <p>
+            Your SkillBridge profile
+          </p>
+
+        </div>
+
+        <div
+          id="profileStatus"
+          class="dashboard-status"
+        >
+          Profile
+        </div>
+
+      </div>
+
+
+      <!-- PROFILE INFORMATION -->
+
+      <div class="dashboard-info-grid">
+
+        <div class="dashboard-info-item">
+
+          <small>Account Type</small>
+
+          <strong id="dashType">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-info-item">
+
+          <small>Country</small>
+
+          <strong id="dashCountry">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-info-item">
+
+          <small>Skills</small>
+
+          <strong id="dashSkills">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-info-item dashboard-trust">
+
+          <small>⭐ Trust Score</small>
+
+          <strong id="dashTrust">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- PROFILE ACTIONS -->
+
+      <div class="dashboard-actions">
+
+        <button
+          class="btn"
+          onclick="showPage('profile')"
+        >
+          ✏️ Edit Profile
+        </button>
+
+        <button
+          class="btn secondary"
+          onclick="showPage('jobs')"
+        >
+          🔎 Find Jobs
+        </button>
+
+      </div>
+
     </div>
 
-    <div class="dashboard-user-info">
 
-      <h3 id="welcomeName">
-        Welcome!
+    <!-- NOTIFICATIONS -->
+
+    <div class="card" style="margin-top:20px;">
+
+      <h3>
+        🔔 Notifications
+        <span id="unreadNotificationsCount"></span>
       </h3>
 
-      <p>
-        Your SkillBridge profile
-      </p>
+      <div id="notificationsList">
+
+        <p>
+          Loading notifications...
+        </p>
+
+      </div>
 
     </div>
 
-    <div
-      id="profileStatus"
-      class="dashboard-status"
-    >
-      Profile
-    </div>
-
-  </div>
-
-
-  <div class="dashboard-info-grid">
-
-    <div class="dashboard-info-item">
-
-      <small>Account Type</small>
-
-      <strong id="dashType">
-        —
-      </strong>
-
-    </div>
-
-
-    <div class="dashboard-info-item">
-
-      <small>Country</small>
-
-      <strong id="dashCountry">
-        —
-      </strong>
-
-    </div>
-
-
-    <div class="dashboard-info-item">
-
-      <small>Skills</small>
-
-      <strong id="dashSkills">
-        —
-      </strong>
-
-    </div>
-
-
-    <div class="dashboard-info-item dashboard-trust">
-
-      <small>⭐ Trust Score</small>
-
-      <strong id="dashTrust">
-        0
-      </strong>
-
-    </div>
-
-  </div>
-
-
-  <div class="dashboard-actions">
-
-    <button onclick="showPage('profile')">
-      ✏️ Edit Profile
-    </button>
-
-    <button onclick="showPage('jobs')">
-      🔎 Find Jobs
-    </button>
-
-  </div>
-
-    </div>
-
-<!-- NOTIFICATIONS -->
-
-<div class="card" style="margin-top:20px;">
-
-  <h3>
-  🔔 Notifications
-  <span id="unreadNotificationsCount"></span>
-  </h3>
-
-  <div id="notificationsList">
-    <p>Loading notifications...</p>
-  </div>
-
-</div>
-
-<button class="btn"
-        onclick="showPage('profile')">
-  Edit Profile
-</button>
-
-      <button class="btn secondary"
-              onclick="showPage('jobs')">
-        Find Jobs
-      </button>
-
-    </div>
 
     <!-- CLIENT MY JOBS -->
 
-    <div id="clientJobsSection" class="card hidden">
+    <div
+      id="clientJobsSection"
+      class="card hidden"
+      style="margin-top:20px;"
+    >
 
-      <h2>My Jobs</h2>
+      <h2>💼 My Jobs</h2>
 
       <p>
         Manage your jobs and view applications from Job Seekers.
       </p>
 
       <div id="clientJobsList">
-        <p>Loading your jobs...</p>
+
+        <p>
+          Loading your jobs...
+        </p>
+
       </div>
 
     </div>
 
+
     <!-- APPLICANTS -->
 
-    <div id="applicantsSection" class="card hidden">
+    <div
+      id="applicantsSection"
+      class="card hidden"
+      style="margin-top:20px;"
+    >
 
-      <h2>Applicants</h2>
+      <h2>👥 Applicants</h2>
 
       <div id="applicantsList">
-        <p>Select a job to view applicants.</p>
+
+        <p>
+          Select a job to view applicants.
+        </p>
+
       </div>
 
     </div>
 
   </div>
 
-</section>
+  </section>
 
 
 <!-- PROFILE -->
