@@ -2919,9 +2919,36 @@ async function updateApplicationStatus(applicationId, jobId, status){
 
   }
 
+
+/* =====================================================
+   SKILLBRIDGE GLOBAL BUTTON FIX
+===================================================== */
+
+// Make all inline button functions accessible
+
+window.showPage = showPage;
+window.login = login;
+window.register = register;
+window.logout = logout;
+
+window.saveProfile = saveProfile;
+window.postJob = postJob;
+
+window.openApply = openApply;
+window.submitApplication = submitApplication;
+
+window.markNotificationAsRead =
+  markNotificationAsRead;
+
+window.loadApplicants = loadApplicants;
+
+window.updateApplicationStatus =
+  updateApplicationStatus;
+
+
 /* =====================================================
    START APP
-   ===================================================== */
+===================================================== */
 
 loadSession();
 
