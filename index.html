@@ -337,6 +337,226 @@ footer p {
     max-width: 1200px;
   }
 }
+   
+/* =========================================
+   SKILLBRIDGE PREMIUM DASHBOARD ENHANCEMENT
+========================================= */
+
+/* IMPORTANT: Hide inactive pages */
+.hidden {
+  display: none !important;
+}
+
+/* HEADER */
+header {
+  background: #123b30;
+  padding: 16px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logo {
+  color: #edc65a;
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: .5px;
+}
+
+header nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+}
+
+header nav button {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 9px 13px;
+  font-size: 13px;
+}
+
+header nav button:hover {
+  background: #edc65a;
+  color: #123b30;
+}
+
+/* HERO SECTION */
+.hero {
+  background: linear-gradient(135deg,#123b30,#1d604b);
+  color: white;
+  padding: 75px 7%;
+  text-align: center;
+}
+
+.hero h1 {
+  color: white;
+  font-size: clamp(30px,5vw,48px);
+  margin-bottom: 15px;
+}
+
+.hero p {
+  color: #e2eee7;
+  max-width: 650px;
+  margin: 0 auto 25px;
+}
+
+.btn.light {
+  background: #edc65a;
+  color: #123b30;
+}
+
+.btn.secondary {
+  background: #e9f1ec;
+  color: #123b30;
+}
+
+/* DASHBOARD */
+.dashboard-header {
+  margin-bottom: 25px;
+}
+
+.dashboard-header h2 {
+  font-size: 29px;
+  margin-bottom: 4px;
+}
+
+.dashboard-profile-card {
+  overflow: hidden;
+  position: relative;
+  border-top: 5px solid #edc65a;
+}
+
+.dashboard-status {
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.dashboard-actions button {
+  flex: 1;
+  min-width: 150px;
+}
+
+/* PROFILE INFORMATION */
+.dashboard-info-item {
+  transition: .2s ease;
+}
+
+.dashboard-info-item:hover {
+  border-color: #1d604b;
+  transform: translateY(-2px);
+}
+
+.dashboard-info-item small {
+  color: #718078;
+  display: block;
+  margin-bottom: 7px;
+}
+
+.dashboard-info-item strong {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+/* NOTIFICATIONS */
+#notificationsList .card {
+  border-left: 4px solid #edc65a;
+  transition: .2s ease;
+}
+
+#notificationsList .card:hover {
+  background: #f0f8f3;
+  transform: translateX(3px);
+}
+
+#unreadNotificationsCount {
+  color: #d94343;
+  font-size: 14px;
+}
+
+/* JOBS AND APPLICANTS */
+#clientJobsList .card,
+#applicantsList .card,
+#jobsList .card {
+  border-radius: 15px;
+  margin-bottom: 16px;
+}
+
+#clientJobsList button,
+#applicantsList button {
+  margin: 5px 4px 5px 0;
+}
+
+/* MESSAGES */
+.message {
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin: 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.message.success {
+  background: #e8f7ed;
+  color: #16834a;
+}
+
+.message.error {
+  background: #fff0f0;
+  color: #d94343;
+}
+
+/* MOBILE DASHBOARD */
+@media(max-width:650px) {
+
+  header {
+    justify-content: center;
+    text-align: center;
+  }
+
+  header nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  header nav button {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .hero {
+    padding: 55px 6%;
+  }
+
+  .dashboard-header h2 {
+    font-size: 24px;
+  }
+
+  .dashboard-status {
+    margin-left: 0;
+  }
+
+  .dashboard-actions {
+    flex-direction: column;
+  }
+
+  .dashboard-actions button {
+    width: 100%;
+  }
+   }
+   
    </style>
    
 </head>
