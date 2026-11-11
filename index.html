@@ -681,6 +681,58 @@ header nav button:hover {
   }
    }
    
+/* PREMIUM CLIENT JOB CARDS */
+
+#clientJobsList .client-job-card {
+  background: #ffffff;
+  border: 1px solid #e3ebe6;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 5px 18px rgba(18,59,48,.06);
+}
+
+.client-job-card h3 {
+  font-size: 19px;
+  margin-top: 0;
+}
+
+.job-status {
+  display: inline-block;
+  padding: 7px 13px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  background: #e8f7ed;
+  color: #16834a;
+  text-transform: capitalize;
+}
+
+.job-status.open {
+  background: #e8f1ff;
+  color: #2563a6;
+}
+
+.job-status.assigned {
+  background: #fff5d9;
+  color: #936600;
+}
+
+.job-status.in_progress {
+  background: #e9e5ff;
+  color: #5941a5;
+}
+
+.job-status.completed {
+  background: #e8f7ed;
+  color: #16834a;
+}
+
+.job-status.cancelled {
+  background: #fff0f0;
+  color: #d94343;
+   }
+        
    </style>
    
 </head>
@@ -2521,10 +2573,23 @@ async function loadClientJobs(){
     return;
   }
 
-  list.innerHTML = jobs.map(job => `
-    <div class="card">
+  
+list.innerHTML = jobs.map(job => {
 
-      <h3>${safe(job.title)}</h3>
+  const statusClass = [
+    "open",
+    "assigned",
+    "in_progress",
+    "completed",
+    "cancelled"
+  ].includes(job.status)
+    ? job.status
+    : "unknown";
+
+  return `
+    <div class="client-job-card">
+
+      <h3>💼 ${safe(job.title)}</h3>
 
       <p>
         <strong>Category:</strong>
@@ -2539,18 +2604,21 @@ async function loadClientJobs(){
 
       <p>
         <strong>Status:</strong>
-        ${safe(job.status || "open")}
+        <span class="job-status ${statusClass}">
+          ${safe(job.status || "open")}
+        </span>
       </p>
 
       <button class="btn"
         onclick="loadApplicants('${job.id}')">
-        View Applicants
+        👥 View Applicants
       </button>
 
     </div>
-  `).join("");
+  `;
 
-}
+}).join("");
+   
 
 
 /* =========================
