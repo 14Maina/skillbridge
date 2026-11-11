@@ -2928,6 +2928,33 @@ loadSession();
 showPage("home");
 
 </script>
+   
+<script>
+/* SKILLBRIDGE JAVASCRIPT ERROR CHECK */
+
+window.addEventListener("error", function(event) {
+
+  let box = document.getElementById("skillBridgeError");
+
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "skillBridgeError";
+
+    box.style.cssText =
+      "position:fixed;bottom:10px;left:10px;right:10px;" +
+      "z-index:999999;background:#7f1d1d;color:white;" +
+      "padding:15px;border-radius:12px;font-size:14px;";
+
+    document.body.appendChild(box);
+  }
+
+  box.textContent =
+    "SkillBridge Error: " + event.message +
+    " | Line: " + event.lineno;
+
+});
+
+</script>
 
 </body>
 </html>
