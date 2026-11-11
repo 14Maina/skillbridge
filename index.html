@@ -631,7 +631,56 @@ header nav button:hover {
     font-size: 17px;
   }
    }
-     
+
+   
+/* PREMIUM PROFILE HEADER */
+
+#page-dashboard .dashboard-profile-top {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+}
+
+#page-dashboard .dashboard-avatar {
+  width: 76px;
+  height: 76px;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+#page-dashboard .dashboard-user-info {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+#page-dashboard .dashboard-user-info h3 {
+  font-size: 20px;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+
+#page-dashboard .dashboard-status {
+  grid-column: 1 / -1;
+  margin: 8px 0 0;
+}
+
+#page-dashboard .dashboard-profile-card {
+  padding: 22px;
+}
+
+@media(max-width: 400px) {
+  #page-dashboard .dashboard-avatar {
+    width: 62px;
+    height: 62px;
+  }
+
+  #page-dashboard .dashboard-user-info h3 {
+    font-size: 17px;
+  }
+   }
+   
    </style>
    
 </head>
