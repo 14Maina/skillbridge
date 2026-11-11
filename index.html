@@ -732,7 +732,88 @@ header nav button:hover {
   background: #fff0f0;
   color: #d94343;
    }
-        
+
+   
+/* =================================
+   SKILLBRIDGE ADVANCED JOB CARDS
+================================= */
+
+#clientJobsList .card,
+#applicantsList .card {
+  background: #ffffff;
+  border: 1px solid #e3ebe6;
+  border-radius: 18px;
+  padding: 22px;
+  margin: 18px 0;
+  box-shadow: 0 8px 25px rgba(18,59,48,.07);
+  transition: .25s ease;
+}
+
+#clientJobsList .card:hover,
+#applicantsList .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(18,59,48,.12);
+}
+
+#clientJobsList h3,
+#applicantsList h3 {
+  color: #123b30;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+#clientJobsList p,
+#applicantsList p {
+  color: #64736b;
+  margin: 10px 0;
+}
+
+#clientJobsList button,
+#applicantsList button {
+  margin: 7px 5px 0 0;
+  min-height: 44px;
+  padding: 11px 18px;
+  border-radius: 10px;
+}
+
+#applicantsList button:last-child {
+  background: #d94343;
+}
+
+#applicantsList button:last-child:hover {
+  background: #b92d2d;
+}
+
+/* NOTIFICATION DESIGN */
+
+#notificationsList .card {
+  border-left: 4px solid #edc65a;
+  border-radius: 13px;
+  padding: 17px;
+  margin: 12px 0;
+  background: #ffffff;
+}
+
+#notificationsList .card h4 {
+  color: #123b30;
+  margin-top: 0;
+}
+
+/* MOBILE RESPONSIVENESS */
+
+@media(max-width:650px) {
+  #clientJobsList .card,
+  #applicantsList .card {
+    padding: 17px;
+  }
+
+  #clientJobsList button,
+  #applicantsList button {
+    width: 100%;
+    margin: 6px 0;
+  }
+   }
+                                     
    </style>
    
 </head>
