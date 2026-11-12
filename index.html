@@ -852,9 +852,57 @@ header nav button:hover {
   font-size: 13px;
   font-weight: 600;
      }
-   
+   /* PREMIUM DASHBOARD STATISTICS */
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #e3ebe6;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 6px 20px rgba(18,59,48,.06);
+}
+
+.stat-icon {
+  width: 43px;
+  height: 43px;
+  background: #e9f2ec;
+  color: #1d604b;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.stat-card h3 {
+  font-size: 25px;
+  margin: 5px 0;
+}
+
+.stat-card p {
+  font-size: 13px;
+  margin: 0;
+  color: #718078;
+}
+
+@media(max-width:380px) {
+  .dashboard-stats {
+    gap: 9px;
+  }
+
+  .stat-card {
+    padding: 13px;
+  }
+   }
    </style>
-   
+   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
@@ -1197,7 +1245,43 @@ header nav button:hover {
       </div>
 
     </div>
+<!-- DASHBOARD STATISTICS -->
 
+<div class="dashboard-stats">
+
+  <div class="stat-card">
+    <div class="stat-icon">
+      <i data-lucide="briefcase-business"></i>
+    </div>
+    <h3 id="statTotalJobs">0</h3>
+    <p>Total Jobs</p>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">
+      <i data-lucide="users"></i>
+    </div>
+    <h3 id="statApplicants">0</h3>
+    <p>Applicants</p>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">
+      <i data-lucide="clock-3"></i>
+    </div>
+    <h3 id="statOpenJobs">0</h3>
+    <p>Open Jobs</p>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">
+      <i data-lucide="circle-check"></i>
+    </div>
+    <h3 id="statCompletedJobs">0</h3>
+    <p>Completed Jobs</p>
+  </div>
+
+</div>
 
     <!-- NOTIFICATIONS -->
 
@@ -1710,6 +1794,7 @@ async function loadDashboard(){
 
   const profile =
     await loadCurrentProfile();
+   await loadDashboardStats();
 
   if(!profile){
 
@@ -1779,6 +1864,73 @@ document.getElementById("dashSkill")
       : `<span class="message error">⚠️ Profile Incomplete</span>`;
 }
 await loadDashboardStats();
+   /* =========================
+   DASHBOARD STATISTICS
+========================= */
+
+async function loadDashboardStats(){
+
+  if(!currentUser) return;
+
+  const { data: myJobs, error } =
+    await supabaseClient
+      .from("jobs")
+      .select("id,status")
+      .eq("client_id", currentUser.id);
+
+  if(error){
+    console.error("Statistics error:", error);
+    return;
+  }
+
+  const jobList = myJobs || [];
+
+  const totalJobs = jobList.length;
+
+  const openJobs =
+    jobList.filter(j => j.status === "open").length;
+
+  const completedJobs =
+    jobList.filter(j => j.status === "completed").length;
+
+  let applicants = 0;
+
+  const jobIds = jobList.map(j => j.id);
+
+  if(jobIds.length > 0){
+
+    const { count, error: appError } =
+      await supabaseClient
+        .from("applications")
+        .select("id", {
+          count: "exact",
+          head: true
+        })
+        .in("job_id", jobIds);
+
+    if(appError){
+      console.error(appError);
+    }else{
+      applicants = count || 0;
+    }
+  }
+
+  document.getElementById("statTotalJobs")
+    .textContent = totalJobs;
+
+  document.getElementById("statApplicants")
+    .textContent = applicants;
+
+  document.getElementById("statOpenJobs")
+    .textContent = openJobs;
+
+  document.getElementById("statCompletedJobs")
+    .textContent = completedJobs;
+
+  if(window.lucide){
+    lucide.createIcons();
+  }
+}
 
 async function loadProfile(){
 
