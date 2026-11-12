@@ -3051,6 +3051,103 @@ window.addEventListener("error", function(event) {
 
 });
 
+async function loadDashboardStats(){
+
+  if(!currentUser) return;
+
+  const ids = [
+    "statTotalJobs",
+    "statApplicants",
+    "statOpenJobs",
+    "statCompleted"
+  ];
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = "...";
+  });
+
+  const isClient =
+    currentProfile?.account_type === "client";
+
+  let jobQuery = supabaseClient
+    .from("jobs")
+    .select("id,status", { count:"exact" });
+
+  if(isClient){
+    jobQuery = jobQuery.eq(
+      "client_id", currentUser.id
+    );
+  }
+
+  const { data: jobData, error: jobError } =
+    await jobQuery;
+
+  if(jobError){
+    console.error("Dashboard jobs:", jobError);
+    return;
+  }
+
+  let applicationQuery = supabaseClient
+    .from("applications")
+    .select("id,status,job_id,worker_id");
+
+  if(isClient){
+    const myJobIds = (jobData || []).map(j => j.id);
+
+    if(myJobIds.length === 0){
+      applicationQuery = null;
+    } else {
+      applicationQuery = applicationQuery.in(
+        "job_id", myJobIds
+      );
+    }
+
+  } else {
+    applicationQuery = applicationQuery.eq(
+      "worker_id", currentUser.id
+    );
+  }
+
+  let applications = [];
+
+  if(applicationQuery){
+    const { data, error } =
+      await applicationQuery;
+
+    if(error){
+      console.error("Applications:", error);
+      return;
+    }
+
+    applications = data || [];
+  }
+
+  const totalJobs = jobData?.length || 0;
+
+  const openJobs = (jobData || []).filter(
+    j => j.status === "open"
+  ).length;
+
+  const completed = (jobData || []).filter(
+    j => j.status === "completed"
+  ).length;
+
+  const applicants = applications.length;
+
+  document.getElementById("statTotalJobs")
+    .textContent = totalJobs;
+
+  document.getElementById("statApplicants")
+    .textContent = applicants;
+
+  document.getElementById("statOpenJobs")
+    .textContent = openJobs;
+
+  document.getElementById("statCompleted")
+    .textContent = completed;
+   }
+   
 </script>
 
 </body>
