@@ -1834,47 +1834,87 @@ async function loadDashboardStats(){
 
   if(!currentUser) return;
 
-  const { data: myJobs, error } =
-    await supabaseClient
-      .from("jobs")
-      .select("id,status")
-      .eq("client_id", currentUser.id);
+  const isClient =
+    currentProfile?.account_type === "client";
 
-  if(error){
-    console.error("Statistics error:", error);
-    return;
-  }
-
-  const jobList = myJobs || [];
-
-  const totalJobs = jobList.length;
-
-  const openJobs =
-    jobList.filter(j => j.status === "open").length;
-
-  const completedJobs =
-    jobList.filter(j => j.status === "completed").length;
-
+  let totalJobs = 0;
   let applicants = 0;
+  let openJobs = 0;
+  let completedJobs = 0;
 
-  const jobIds = jobList.map(j => j.id);
+  if(isClient){
 
-  if(jobIds.length > 0){
+    const { data: myJobs, error } =
+      await supabaseClient
+        .from("jobs")
+        .select("id,status")
+        .eq("client_id", currentUser.id);
 
-    const { count, error: appError } =
+    if(error){
+      console.error("Statistics error:", error);
+      return;
+    }
+
+    const jobList = myJobs || [];
+
+    totalJobs = jobList.length;
+
+    openJobs = jobList.filter(
+      j => j.status === "open"
+    ).length;
+
+    completedJobs = jobList.filter(
+      j => j.status === "completed"
+    ).length;
+
+    const jobIds = jobList.map(j => j.id);
+
+    if(jobIds.length > 0){
+
+      const { count, error: appError } =
+        await supabaseClient
+          .from("applications")
+          .select("id", {
+            count: "exact",
+            head: true
+          })
+          .in("job_id", jobIds);
+
+      if(appError){
+        console.error(appError);
+      }else{
+        applicants = count || 0;
+      }
+    }
+
+  }else{
+
+    const { data: myApplications, error } =
       await supabaseClient
         .from("applications")
-        .select("id", {
-          count: "exact",
-          head: true
-        })
-        .in("job_id", jobIds);
+        .select("id,status")
+        .eq("worker_id", currentUser.id);
 
-    if(appError){
-      console.error(appError);
-    }else{
-      applicants = count || 0;
+    if(error){
+      console.error("Application statistics:", error);
+      return;
     }
+
+    const applicationList = myApplications || [];
+
+    totalJobs = applicationList.length;
+
+    applicants = applicationList.filter(
+      a => a.status === "accepted"
+    ).length;
+
+    openJobs = applicationList.filter(
+      a => a.status === "pending"
+    ).length;
+
+    completedJobs = applicationList.filter(
+      a => a.status === "rejected"
+    ).length;
   }
 
   document.getElementById("statTotalJobs")
@@ -1889,10 +1929,21 @@ async function loadDashboardStats(){
   document.getElementById("statCompletedJobs")
     .textContent = completedJobs;
 
+  const labels = isClient
+    ? ["Total Jobs", "Applicants", "Open Jobs", "Completed Jobs"]
+    : ["Applications", "Accepted", "Pending", "Rejected"];
+
+  document.querySelectorAll(
+    "#dashboardStats .stat-card p"
+  ).forEach((element, index) => {
+    element.textContent = labels[index];
+  });
+
   if(window.lucide){
     lucide.createIcons();
   }
-}
+   }
+         
 
 async function loadProfile(){
 
